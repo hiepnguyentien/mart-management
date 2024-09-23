@@ -33,8 +33,8 @@ public abstract class Person {
     LocalDate dateOfBirth;
     @ManyToMany
     @JoinTable(
-            name = "student_roles",
-            joinColumns = @JoinColumn(name = "student_id"),
+            name = "person_roles",
+            joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_name")
     )
     Set<Role> roles;

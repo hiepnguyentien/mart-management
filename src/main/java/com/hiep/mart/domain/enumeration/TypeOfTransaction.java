@@ -16,7 +16,7 @@ public enum TypeOfTransaction {
 
     @Override
     public String toString() {
-        return typeOfTransaction; // Trả về trực tiếp giá trị
+        return typeOfTransaction;
     }
 
     public static TypeOfTransaction fromString(String text) {
@@ -25,6 +25,6 @@ public enum TypeOfTransaction {
                 return b;
             }
         }
-        throw new IllegalArgumentException("No enum constant for value: " + text); // Ném ngoại lệ nếu không tìm thấy
+        throw new IllegalArgumentException("No enum constant for value: " + text);
     }
 }

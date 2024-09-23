@@ -2,7 +2,7 @@ package com.hiep.mart.domain.entity;
 
 import java.util.Set;
 
-import org.apache.logging.log4j.core.tools.picocli.CommandLine.Help.Ansi.Text;
+//import org.apache.logging.log4j.core.tools.picocli.CommandLine.Help.Ansi.Text;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +28,8 @@ public class Products {
     String productName;
     @Column(name = "product_price")
     Double productPrice;
+    @Column(name = "product_unit")
+    String productUnit;
     @Column(name = "product_description")
     String productDescription;
     @Column(name = "product_image")
@@ -38,8 +40,8 @@ public class Products {
     String productBrand;
     @Column(name = "inventory_quantity")
     Long inventoryQuantity;
-    @Column(name = "infomation")
-    Text infomation;
+    @Column(name = "information")
+    String information;
 
     @OneToMany(mappedBy = "products")
     Set<Batch> batch;

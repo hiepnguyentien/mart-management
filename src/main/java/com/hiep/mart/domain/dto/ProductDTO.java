@@ -9,16 +9,18 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class ProductDTO {
-    Long id;
-    String code;
-    String name;
-    Double price;
-    String description;
-    String image;
-    String status;
-    String brand;
+    Long productId;
+    String productCode;
+    String productName;
+    Double productPrice;
+    String productUnit;
+    String productDescription;
+    String productImage;
+    String productStatus;
+    String productBrand;
     Long inventoryQuantity;
-    Long categoryId;
     Long supplierId;
-    Long batchId;
+    String information;
+    double discountPercentage; 
+    double discountAmount;
 }

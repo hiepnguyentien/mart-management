@@ -9,15 +9,15 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class ProductRequest {
-    String code;
-    String name;
-    Double price;
-    String description;
-    String image;
-    String status;
-    String brand;
+    String productCode;
+    String productName;
+    Double productPrice;
+    String productUnit;
+    String productDescription;
+    String productImage;
+    String productStatus;
+    String productBrand;
     Long inventoryQuantity;
-    Long categoryId;
     Long supplierId;
-    Long batchId;
+    String information;
 }
