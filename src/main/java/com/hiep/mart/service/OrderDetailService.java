@@ -1,2 +1,4 @@
-package com.hiep.mart.service;public interface OrderDetailService {
+package com.hiep.mart.service;
+
+public interface OrderDetailService {
 }

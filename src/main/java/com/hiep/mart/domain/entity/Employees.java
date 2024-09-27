@@ -1,6 +1,7 @@
 package com.hiep.mart.domain.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -21,6 +22,6 @@ public class Employees extends Person {
     @Column(name = "employee_id")
     Long employeeId;
 
-    @OneToMany(mappedBy = "employees")
+    @ManyToMany
     Set<Shift> shifts;
 }

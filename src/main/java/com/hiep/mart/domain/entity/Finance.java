@@ -1,5 +1,6 @@
 package com.hiep.mart.domain.entity;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import com.hiep.mart.domain.enumeration.TypeOfTransaction;
@@ -21,6 +22,10 @@ public class Finance {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "finance_sequence")
     @Column(name = "finance_id")
     Long financeId;
-
+    @Column(name = "transaction_date")
+    LocalDate transactionDate;
+    @Column(name = "transaction_price")
+    Double transactionPrice;
+    @Column(name = "type_of_transaction")
     TypeOfTransaction typeOfTransaction;
 }

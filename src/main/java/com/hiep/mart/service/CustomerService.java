@@ -1,2 +1,4 @@
-package com.hiep.mart.service;public class CustomerService {
+package com.hiep.mart.service;
+
+public interface CustomerService {
 }

@@ -16,7 +16,6 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table(name = "products")
 public class Products {
-
     @Id
     @SequenceGenerator(name = "product_sequence", sequenceName = "product_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")

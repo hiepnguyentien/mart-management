@@ -1,2 +1,4 @@
-package com.hiep.mart.service;public class BatchService {
+package com.hiep.mart.service;
+
+public interface BatchService {
 }

@@ -20,7 +20,7 @@ public class Promotion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long promotionId;
 
     String name;
     String description;

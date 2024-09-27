@@ -1,2 +1,4 @@
-package com.hiep.mart.controller;public class BatchController {
+package com.hiep.mart.controller;
+
+public class BatchController {
 }

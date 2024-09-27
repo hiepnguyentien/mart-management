@@ -16,7 +16,7 @@ public class Cart {
     @SequenceGenerator(name = "cart_sequence", sequenceName = "cart_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_sequence")
     @Column(name = "cart_id")
-    Long cartlId;
+    Long cartId;
     @Column(name = "quantity")
     Long quantity;
 

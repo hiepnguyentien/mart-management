@@ -1,2 +1,4 @@
-package com.hiep.mart.controller;public class EmployeeController {
+package com.hiep.mart.controller;
+
+public class EmployeeController {
 }

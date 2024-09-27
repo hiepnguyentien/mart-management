@@ -1,8 +1,8 @@
 package com.hiep.mart.domain.entity;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,8 +31,4 @@ public class Shift {
     LocalTime shiftEndTime;
     @Column(name = "shift_status")
     String shiftStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    Employees employees;
 }

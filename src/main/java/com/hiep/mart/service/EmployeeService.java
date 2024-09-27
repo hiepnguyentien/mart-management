@@ -1,2 +1,4 @@
-package com.hiep.mart.service;public class EmployeeService {
+package com.hiep.mart.service;
+
+public interface EmployeeService {
 }

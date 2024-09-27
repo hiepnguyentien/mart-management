@@ -1,2 +1,4 @@
-package com.hiep.mart.service;public interface Finance {
+package com.hiep.mart.service;
+
+public interface Finance {
 }

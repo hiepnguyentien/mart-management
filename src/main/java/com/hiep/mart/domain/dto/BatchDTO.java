@@ -1,5 +1,7 @@
 package com.hiep.mart.domain.dto;
 
+import java.time.LocalDate;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,11 +10,12 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PUBLIC)
-public class OrderDetailDTO {
-    Long orderDetailId;
-    Long orderDetailQuantity;
-    Double orderDetailPrice;
-    String orderDetailStatus;
-    Long orderId;
+public class BatchDTO {
+    Long batchId;
+    Long batchQuantity;
+    Double batchPrice;
+    LocalDate importDate;
+    LocalDate expiredDate;
+    String batchStatus;
     Long productId;
 }

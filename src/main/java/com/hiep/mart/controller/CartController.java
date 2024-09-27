@@ -1,2 +1,4 @@
-package com.hiep.mart.controller;public class CartController {
+package com.hiep.mart.controller;
+
+public class CartController {
 }
