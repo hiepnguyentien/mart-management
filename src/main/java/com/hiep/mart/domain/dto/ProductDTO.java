@@ -21,6 +21,13 @@ public class ProductDTO {
     Long inventoryQuantity;
     Long supplierId;
     String information;
-    double discountPercentage; 
-    double discountAmount;
+    Double discountPercentage;
+    Double discountAmount;
+    Double promotionalPrice;
+
+    public Double getPromotionalPrice() {
+        if (getDiscountAmount() == null)
+            return getProductPrice();
+        return getProductPrice() - getProductPrice()*getDiscountAmount()/100;
+    }
 }

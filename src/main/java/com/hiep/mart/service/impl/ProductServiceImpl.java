@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.hiep.mart.domain.entity.Products;
+import com.hiep.mart.domain.entity.Promotion;
 import com.hiep.mart.exception.AppException;
 import com.hiep.mart.exception.ErrorCode;
 import jakarta.transaction.Transactional;
@@ -81,14 +82,12 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductDTO> getProductsByCategoryId(Long categoryId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProductsByCategoryId'");
+        return productRepository.getProductByCategoryId(categoryId);
     }
 
     @Override
     public List<ProductDTO> getProductsBySupplierId(Long supplierId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProductsBySupplierId'");
+        return productRepository.getProductBySupplierId(supplierId);
     }
 
     @Override
@@ -122,21 +121,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductDTO> getProductsByName(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProductsByName'");
-    }
-
-    @Override
     public List<ProductDTO> getProductsByCode(String code) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getProductsByCode'");
     }
 
     @Override
-    public List<ProductDTO> getProductsByPromotion(double discountPercentage) {
+    public List<ProductDTO> getProductsByPromotion(Double discountPercentage) {
+        return List.of();
+    }
+
+    @Override
+    public ProductDTO addProductToCart(Long productId, Long cartId, Locale locale) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProductsByPromotion'");
+        throw new UnsupportedOperationException("Unimplemented method 'addProductToCart'");
     }
     
 }

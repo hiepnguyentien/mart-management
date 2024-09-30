@@ -11,6 +11,6 @@ import lombok.experimental.FieldDefaults;
 public class CartDTO {
     Long cartId;
     Long quantity;
-    Long customerId;
+    Long userId;
     Long productId;
 }

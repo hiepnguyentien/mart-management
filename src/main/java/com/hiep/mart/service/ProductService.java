@@ -22,7 +22,8 @@ public interface ProductService {
     List<ProductDTO> getProductsByStatus(String status);
     List<ProductDTO> getProductsByPrice(Double price);
     List<ProductDTO> getProductsByInventoryQuantity(Long inventoryQuantity);
-    List<ProductDTO> getProductsByName(String name);
     List<ProductDTO> getProductsByCode(String code);
-    List<ProductDTO> getProductsByPromotion(double discountPercentage);
+    List<ProductDTO> getProductsByPromotion(Double discountPercentage);
+
+    ProductDTO addProductToCart(Long productId, Long cartId, Locale locale);
 }

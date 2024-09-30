@@ -2,6 +2,7 @@ package com.hiep.mart.controller;
 
 import com.hiep.mart.domain.dto.ProductDTO;
 import com.hiep.mart.domain.request.ProductRequest;
+import com.hiep.mart.domain.response.ApiResponse;
 import com.hiep.mart.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -25,8 +26,23 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @PostMapping
-    public ProductDTO createProduct(@Valid @RequestBody ProductRequest request){
-        return productService.createProduct(request);
+    @GetMapping("/category/{categoryId}")
+    public List<ProductDTO> findProductByCategory(@PathVariable Long categoryId){
+        return productService.getProductsByCategoryId(categoryId);
     }
+
+    @GetMapping("/supplier/{supplierId}")
+    public List<ProductDTO> findProductBySupplierId(@PathVariable Long supplierId){
+        return productService.getProductsBySupplierId(supplierId);
+    }
+
+    @PostMapping
+    public ApiResponse<ProductDTO> createProduct(@Valid @RequestBody ProductRequest request){
+        ApiResponse<ProductDTO> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(productService.createProduct(request));
+        return apiResponse;
+    }
+
+
+
 }

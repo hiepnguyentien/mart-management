@@ -15,7 +15,7 @@ public class CartRequest {
     @Min(value = 1, message = "QUANTITY_MUST_GREATER_THAN_ZERO")
     Long quantity;
     @NotNull(message = "REQUIRED_FIELD_MISSING")
-    Long customerId;
+    Long userId;
     @NotNull(message = "REQUIRED_FIELD_MISSING")
     Long productId;
 }

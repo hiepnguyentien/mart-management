@@ -41,6 +41,8 @@ public class Products {
     Long inventoryQuantity;
     @Column(name = "information")
     String information;
+    @Column(name = "promotional_price")
+    Double promotionalPrice;
 
     @OneToMany(mappedBy = "products")
     Set<Batch> batch;
