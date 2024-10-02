@@ -1,5 +1,6 @@
 package com.hiep.mart.domain.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationRequest {
+//    @NotNull(message = "REQUIRED_FIELD_MISSING")
     String username;
+//    @NotNull(message = "REQUIRED_FIELD_MISSING")
     String password;
 }

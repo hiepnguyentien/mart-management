@@ -23,6 +23,11 @@ public class Users {
     String username;
     @Column(name = "password", nullable = false)
     String password;
+
+    @OneToOne
+    @JoinColumn(name = "customer_id")
+    Customers customers;
+
     @ManyToMany
     @JoinTable(
             name = "user_roles",
@@ -30,5 +35,4 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "role_name")
     )
     Set<Role> roles;
-
 }

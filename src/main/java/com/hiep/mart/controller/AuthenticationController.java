@@ -3,12 +3,15 @@ package com.hiep.mart.controller;
 import com.hiep.mart.domain.dto.IntrospectResponse;
 import com.hiep.mart.domain.dto.UserDTO;
 import com.hiep.mart.domain.request.AuthenticationRequest;
+import com.hiep.mart.domain.request.CustomerRequest;
 import com.hiep.mart.domain.request.IntrospectRequest;
+import com.hiep.mart.domain.request.RegisterRequest;
 import com.hiep.mart.domain.response.ApiResponse;
 import com.hiep.mart.domain.response.AuthenticationResponse;
 import com.hiep.mart.service.UserService;
 import com.hiep.mart.service.impl.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -44,9 +47,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    ApiResponse<UserDTO> register(@RequestBody AuthenticationRequest authenticationRequest) {
+    ApiResponse<UserDTO> register(@Valid @RequestBody RegisterRequest registerRequest, @RequestParam(name = "lang", required = false) String lang) {
+        Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
         ApiResponse<UserDTO> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(userService.registerUser(authenticationRequest));
+        apiResponse.setResult(userService.registerUser(registerRequest, locale));
         return apiResponse;
     }
 }

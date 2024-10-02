@@ -33,7 +33,8 @@ public enum ErrorCode {
 
     UNAUTHORIZED(90001, "unauthorized", HttpStatus.FORBIDDEN),
     UNAUTHENTICATED(90002, "unauthenticated", HttpStatus.UNAUTHORIZED),
-    USER_NOT_FOUND(90003, "user.not.found", HttpStatus.BAD_REQUEST),;
+    USER_NOT_FOUND(90003, "user.not.found", HttpStatus.BAD_REQUEST),
+    ROLE_NOT_FOUND(90004, "role.not.found", HttpStatus.BAD_REQUEST),;
     private final int code;
     private final String message;
     private HttpStatusCode statusCode;
