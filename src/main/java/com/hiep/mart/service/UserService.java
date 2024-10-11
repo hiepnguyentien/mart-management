@@ -9,4 +9,5 @@ import java.util.Locale;
 
 public interface UserService {
     UserDTO registerUser(RegisterRequest registerRequest, Locale locale);
+    Long getCurrentUserId();
 }

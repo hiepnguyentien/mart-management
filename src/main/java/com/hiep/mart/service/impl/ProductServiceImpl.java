@@ -1,16 +1,15 @@
 package com.hiep.mart.service.impl;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.hiep.mart.domain.entity.Products;
-import com.hiep.mart.domain.entity.Promotion;
 import com.hiep.mart.exception.AppException;
 import com.hiep.mart.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import org.springframework.context.MessageSource;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.hiep.mart.domain.dto.ProductDTO;
@@ -22,6 +21,8 @@ import com.hiep.mart.service.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Service
 @RequiredArgsConstructor
@@ -31,13 +32,31 @@ public class ProductServiceImpl implements ProductService{
     ProductRepository productRepository;
     ProductMapper productMapper;
     MessageSource messageSource;
+    CloudinaryService cloudinaryService;
 
     @Override
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll().stream()
+                .filter(p -> p.getProductStatus().equals("Active"))
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
     }
+
+//    @Override
+//    public List<ProductDTO> getAllProducts() {
+//        return productRepository.findAll().stream()
+//                .map(product -> {
+//                    ProductDTO productDTO = productMapper.toProductDTO(product);
+//                    String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                            .path("/images/")
+//                            .path(product.getProductImage())
+//                            .toUriString();
+//                    productDTO.setProductImage(imageUrl);
+//                    return productDTO;
+//                })
+//                .collect(Collectors.toList());
+//    }
+
 
     @Override
     public ProductDTO getProductById(Long id, Locale locale) {
@@ -50,14 +69,17 @@ public class ProductServiceImpl implements ProductService{
     public List<ProductDTO> getProductsByName(String name, Locale locale) {
         return productRepository.findAll().stream()
                 .filter(product -> product.getProductName().contains(name))
+                .filter(p -> p.getProductStatus().equals("Active"))
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public ProductDTO createProduct(ProductRequest request) {
+    public ProductDTO createProduct(ProductRequest request, MultipartFile file) throws IOException {
+        String imageUrl = (String) cloudinaryService.uploadImage(file).get("url");
         Products product = productMapper.toProducts(request);
+        product.setProductImage(imageUrl);
         productRepository.save(product);
         return productMapper.toProductDTO(product);
     }

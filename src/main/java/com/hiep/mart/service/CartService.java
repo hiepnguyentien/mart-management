@@ -1,7 +1,10 @@
 package com.hiep.mart.service;
 
+import com.hiep.mart.domain.dto.CartDTO;
+import com.hiep.mart.domain.request.CartRequest;
+
 public interface CartService {
-    void addToCart(Long userId, Long productId, Long quantity);
+    CartDTO addToCart(CartRequest request);
     void removeFromCart(Long productId);
     void updateCart(Long productId, Long quantity);
     void clearCart();

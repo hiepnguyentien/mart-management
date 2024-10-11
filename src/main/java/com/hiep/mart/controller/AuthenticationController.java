@@ -3,7 +3,6 @@ package com.hiep.mart.controller;
 import com.hiep.mart.domain.dto.IntrospectResponse;
 import com.hiep.mart.domain.dto.UserDTO;
 import com.hiep.mart.domain.request.AuthenticationRequest;
-import com.hiep.mart.domain.request.CustomerRequest;
 import com.hiep.mart.domain.request.IntrospectRequest;
 import com.hiep.mart.domain.request.RegisterRequest;
 import com.hiep.mart.domain.response.ApiResponse;

@@ -22,6 +22,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -69,5 +71,15 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
         return userMapper.toUserDTO(user);
+    }
+
+    @Override
+    public Long getCurrentUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof Users) {
+            UserDTO userDetails = (UserDTO) principal;
+            return userDetails.getUserId();
+        }
+        throw new IllegalStateException("User is not authenticated");
     }
 }

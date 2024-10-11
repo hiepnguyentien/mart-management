@@ -1,5 +1,7 @@
 package com.hiep.mart.service.impl;
 
+import com.hiep.mart.service.UserService;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.hiep.mart.domain.dto.CartDTO;
@@ -20,16 +22,16 @@ public class CartServiceImpl implements CartService {
 
     CartRepository cartRepository;
     CartMapper cartMapper;
+    UserService userService;
 
     @Override
-    public void addToCart(Long userId, Long productId, Long quantity) {
-        CartRequest request = CartRequest.builder()
-                .userId(userId)
-                .productId(productId)
-                .quantity(quantity)
-                .build();
+    @PostAuthorize("returnObject.userId == authentication.userId")
+    public CartDTO addToCart(CartRequest request) {
+        Long userId = userService.getCurrentUserId();
+        request.setUserId(userId);
         Cart cart = cartMapper.toCart(request);
         cartRepository.save(cart);
+        return cartMapper.toCartDTO(cart);
     }
 
     @Override

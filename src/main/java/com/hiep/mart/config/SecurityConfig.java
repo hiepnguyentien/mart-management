@@ -19,7 +19,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINTS = {"/product/find-all", "/auth/token", "/auth/logout", "/auth/refresh", "/auth/register"};
+    private final String[] PUBLIC_ENDPOINTS_POST = {"/auth/token", "/auth/logout",
+            "/auth/refresh", "/auth/register"};
+
+    private final String[] PUBLIC_ENDPOINTS_GET = {"/product/find-all", "product/find-by-id/{productId}",
+            "/category/find-all"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
@@ -28,7 +32,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests(request ->
-                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
+                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS_POST)
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_GET)
                         .permitAll()
                         .anyRequest()
                         .authenticated());

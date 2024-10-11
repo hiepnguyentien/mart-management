@@ -10,12 +10,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @Slf4j
-@RequestMapping(path = "product")
+@RequestMapping(path = "/product")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductController {
@@ -24,6 +27,13 @@ public class ProductController {
     @GetMapping("/find-all")
     public List<ProductDTO> findAllProduct(){
         return productService.getAllProducts();
+    }
+
+    @GetMapping("/find-by-id/{productId}")
+    public ProductDTO findProductById(@PathVariable Long productId,
+                                      @RequestParam(name = "lang", required = false) String lang) {
+        Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
+        return productService.getProductById(productId, locale);
     }
 
     @GetMapping("/category/{categoryId}")
@@ -37,11 +47,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ApiResponse<ProductDTO> createProduct(@Valid @RequestBody ProductRequest request){
+    public ApiResponse<ProductDTO> createProduct(@Valid @RequestBody ProductRequest request,
+                                                 @RequestParam("file") MultipartFile file) throws IOException {
         ApiResponse<ProductDTO> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(productService.createProduct(request));
+        apiResponse.setResult(productService.createProduct(request, file));
         return apiResponse;
     }
+
 
 
 
