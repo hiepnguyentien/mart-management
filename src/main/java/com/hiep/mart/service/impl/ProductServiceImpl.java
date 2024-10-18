@@ -103,6 +103,30 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public ProductDTO inActiveProduct(Long productId, Locale locale) {
+        Products products = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND, messageSource, locale));
+        if(products.getProductStatus().equals("Inactive")) {
+            throw new AppException(ErrorCode.STATUS_ALREADY_INACTIVE, messageSource, locale);
+        }
+        products.setProductStatus("Inactive");
+        productRepository.save(products);
+        return productMapper.toProductDTO(products);
+    }
+
+    @Override
+    public ProductDTO activeProduct(Long productId, Locale locale) {
+        Products products = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND, messageSource, locale));
+        if(products.getProductStatus().equals("Active")) {
+            throw new AppException(ErrorCode.STATUS_ALREADY_ACTIVE, messageSource, locale);
+        }
+        products.setProductStatus("Active");
+        productRepository.save(products);
+        return productMapper.toProductDTO(products);
+    }
+
+    @Override
     public List<ProductDTO> getProductsByCategoryId(Long categoryId) {
         return productRepository.getProductByCategoryId(categoryId);
     }

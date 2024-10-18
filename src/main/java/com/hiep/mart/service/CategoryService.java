@@ -12,4 +12,6 @@ public interface CategoryService {
     CategoryDTO createCategory(CategoryRequest request);
     CategoryDTO updateCategory(Long id, CategoryRequest request, Locale locale);
     void deleteCategory(Long categoryId, Locale locale);
+    CategoryDTO inActivateCategory(Long categoryId, Locale locale);
+    CategoryDTO activateCategory(Long categoryId, Locale locale);
 }

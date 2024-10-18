@@ -45,6 +45,20 @@ public class CategoryController {
         return categoryService.updateCategory(id, request, locale);
     }
 
+    @PutMapping("/inactive/{id}")
+    public CategoryDTO updateInactive(@PathVariable Long id,
+                                      @RequestParam(name = "lang", required = false) String lang){
+        Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
+        return categoryService.inActivateCategory(id, locale);
+    }
+
+    @PutMapping("/active/{id}")
+    public CategoryDTO updateActive(@PathVariable Long id,
+                                      @RequestParam(name = "lang", required = false) String lang){
+        Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
+        return categoryService.activateCategory(id, locale);
+    }
+
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id, @RequestParam(name = "lang", required = false) String lang) {
         Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();

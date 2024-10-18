@@ -15,6 +15,8 @@ public interface ProductService {
     ProductDTO createProduct(ProductRequest request, MultipartFile file) throws IOException;
     ProductDTO updateProduct(Long id, ProductRequest request, Locale locale);
     void deleteProduct(Long id, Locale locale);
+    ProductDTO inActiveProduct(Long id, Locale locale);
+    ProductDTO activeProduct(Long id, Locale locale);
 
     List<ProductDTO> getProductsByCategoryId(Long categoryId);
     List<ProductDTO> getProductsBySupplierId(Long supplierId);

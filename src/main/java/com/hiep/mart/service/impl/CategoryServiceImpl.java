@@ -30,6 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll().stream()
+                .filter(c -> c.getCategoryStatus().equals("ACTIVE"))
                 .map(categoryMapper::toCategoryDTO)
                 .collect(Collectors.toList());
     }
@@ -61,5 +62,29 @@ public class CategoryServiceImpl implements CategoryService {
         Categories category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));
         categoryRepository.delete(category);
+    }
+
+    @Override
+    public CategoryDTO inActivateCategory(Long categoryId, Locale locale) {
+        Categories categories = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));
+        if(categories.getCategoryStatus().equals("INACTIVE")) {
+            throw new AppException(ErrorCode.STATUS_ALREADY_INACTIVE, messageSource, locale);
+        }
+        categories.setCategoryStatus("INACTIVE");
+        categoryRepository.save(categories);
+        return categoryMapper.toCategoryDTO(categories);
+    }
+
+    @Override
+    public CategoryDTO activateCategory(Long categoryId, Locale locale) {
+        Categories categories = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));
+        if(categories.getCategoryStatus().equals("ACTIVE")) {
+            throw new AppException(ErrorCode.STATUS_ALREADY_ACTIVE, messageSource, locale);
+        }
+        categories.setCategoryStatus("ACTIVE");
+        categoryRepository.save(categories);
+        return categoryMapper.toCategoryDTO(categories);
     }
 }

@@ -54,7 +54,17 @@ public class ProductController {
         return apiResponse;
     }
 
+    @PutMapping("/active/{id}")
+    public ProductDTO activeProduct(@PathVariable Long id,
+                                    @RequestParam(name = "lang", required = false) String lang){
+        Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
+        return productService.activeProduct(id, locale);
+    }
 
-
-
+    @PutMapping("/inactive/{id}")
+    public ProductDTO inActiveProduct(@PathVariable Long id,
+                                    @RequestParam(name = "lang", required = false) String lang){
+        Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
+        return productService.inActiveProduct(id, locale);
+    }
 }

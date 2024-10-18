@@ -12,6 +12,8 @@ public enum ErrorCode {
     QUANTITY_MUST_GREATER_THAN_ZERO(1, "quantity.must.greater.than.zero", HttpStatus.BAD_REQUEST),
     PRICE_MUST_GREATER_THAN_ZERO(2, "price.must.greater.than.zero", HttpStatus.BAD_REQUEST),
     REQUIRED_FIELD_MISSING(3, "required.field.missing", HttpStatus.BAD_REQUEST),
+    STATUS_ALREADY_ACTIVE(4, "status.already_active", HttpStatus.BAD_REQUEST),
+    STATUS_ALREADY_INACTIVE(5, "status.already_inactive", HttpStatus.BAD_REQUEST),
 
     PRODUCT_NOT_FOUND(1001, "product.not.found", HttpStatus.BAD_REQUEST),
 
