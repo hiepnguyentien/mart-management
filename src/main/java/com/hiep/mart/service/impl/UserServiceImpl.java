@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getCurrentUserId() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("principal " + principal);
         if (principal instanceof Users) {
             UserDTO userDetails = (UserDTO) principal;
             return userDetails.getUserId();
