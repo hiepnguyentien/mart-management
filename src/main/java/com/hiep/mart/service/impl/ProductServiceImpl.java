@@ -10,6 +10,7 @@ import com.hiep.mart.exception.AppException;
 import com.hiep.mart.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.hiep.mart.domain.dto.ProductDTO;
@@ -35,9 +36,19 @@ public class ProductServiceImpl implements ProductService{
     CloudinaryService cloudinaryService;
 
     @Override
-    public List<ProductDTO> getAllProducts() {
+//    @PreAuthorize("hasAuthority('GET_ALL_ACTIVE_PRODUCT')")
+    public List<ProductDTO> getAllActiveProducts() {
         return productRepository.findAll().stream()
                 .filter(p -> p.getProductStatus().equals("Active"))
+                .map(productMapper::toProductDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    //manager, sale-staff
+    @PreAuthorize("hasAuthority('GET_ALL_PRODUCT')")
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll().stream()
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
     }
@@ -57,8 +68,8 @@ public class ProductServiceImpl implements ProductService{
 //                .collect(Collectors.toList());
 //    }
 
-
     @Override
+//    @PreAuthorize("hasAuthority('GET_PRODUCT_BY_ID')")
     public ProductDTO getProductById(Long id, Locale locale) {
         return productRepository.findById(id)
                 .map(productMapper::toProductDTO)
@@ -66,16 +77,19 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductDTO> getProductsByName(String name, Locale locale) {
+//    @PreAuthorize("hasAuthority('GET_PRODUCT_BY_NAME')")
+    public List<ProductDTO> getProductsByName(String name) {
         return productRepository.findAll().stream()
-                .filter(product -> product.getProductName().contains(name))
+                .filter(product -> product.getProductName().toLowerCase().contains(name.toLowerCase()))
                 .filter(p -> p.getProductStatus().equals("Active"))
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
     }
 
+
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('ADD_NEW_PRODUCT')")
     public ProductDTO createProduct(ProductRequest request, MultipartFile file) throws IOException {
         String imageUrl = (String) cloudinaryService.uploadImage(file).get("url");
         Products product = productMapper.toProducts(request);
@@ -85,6 +99,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
+    @PreAuthorize("hasAuthority('UPDATE_PRODUCT')")
     public ProductDTO updateProduct(Long productId, ProductRequest request, Locale locale) {
         Products products = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND, messageSource, locale));
@@ -95,6 +111,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
+    @PreAuthorize("hasAuthority('DELETE_PRODUCT')")
     public void deleteProduct(Long productId, Locale locale) {
         Products products = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND, messageSource, locale));
@@ -103,6 +121,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
+    @PreAuthorize("hasAuthority('INACTIVE_PRODUCT')")
     public ProductDTO inActiveProduct(Long productId, Locale locale) {
         Products products = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND, messageSource, locale));
@@ -115,6 +135,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ACTIVE_PRODUCT')")
+    @Transactional
     public ProductDTO activeProduct(Long productId, Locale locale) {
         Products products = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND, messageSource, locale));

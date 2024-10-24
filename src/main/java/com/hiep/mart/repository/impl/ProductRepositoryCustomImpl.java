@@ -21,8 +21,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 "    p.information, p2.discountPercentage, p2.discountAmount, p.promotionalPrice)\n" +
                 "FROM Products p\n" +
                 "JOIN p.categories c \n" +
-                "LEFT JOIN p.promotions p2 \n" +
-                "WHERE c.categoryId = :categoryId and p.product_status = 'Active'\n");
+                "LEFT JOIN p.promotions p2\n" +
+                "WHERE c.categoryId = :categoryId and p.productStatus = 'Active'\n");
 
         TypedQuery<ProductDTO> query = em.createQuery(sql.toString(), ProductDTO.class);
         query.setParameter("categoryId", categoryId);

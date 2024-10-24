@@ -10,8 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductService {
     List<ProductDTO> getAllProducts();
+    List<ProductDTO> getAllActiveProducts();
     ProductDTO getProductById(Long id, Locale locale);
-    List<ProductDTO> getProductsByName(String name, Locale locale);
+    List<ProductDTO> getProductsByName(String name);
     ProductDTO createProduct(ProductRequest request, MultipartFile file) throws IOException;
     ProductDTO updateProduct(Long id, ProductRequest request, Locale locale);
     void deleteProduct(Long id, Locale locale);

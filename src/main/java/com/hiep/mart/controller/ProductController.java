@@ -9,6 +9,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,9 +28,21 @@ import java.util.Locale;
 public class ProductController {
     ProductService productService;
 
-    @GetMapping("/find-all")
+    @GetMapping("/find-all-active")
     public List<ProductDTO> findAllProduct(){
-        return productService.getAllProducts();
+        return productService.getAllActiveProducts();
+    }
+
+    @GetMapping("/find-all")
+    public List<ProductDTO> findAllActiveProducts() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_MANAGER") ||
+                        grantedAuthority.getAuthority().equals("ROLE_SALE_STAFF"))) {
+            return productService.getAllProducts();
+        } else {
+            return productService.getAllActiveProducts();
+        }
     }
 
     @GetMapping("/find-by-id/{productId}")
@@ -44,6 +60,11 @@ public class ProductController {
     @GetMapping("/supplier/{supplierId}")
     public List<ProductDTO> findProductBySupplierId(@PathVariable Long supplierId){
         return productService.getProductsBySupplierId(supplierId);
+    }
+
+    @GetMapping("/find-by-name/{name}")
+    public List<ProductDTO> findProductByName(@PathVariable String name){
+        return productService.getProductsByName(name);
     }
 
     @PostMapping

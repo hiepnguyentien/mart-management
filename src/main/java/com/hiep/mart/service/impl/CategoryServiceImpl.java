@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
     MessageSource messageSource;
 
     @Override
+//    @PreAuthorize("hasAuthority('GET_ALL_CATEGORY')")
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll().stream()
                 .filter(c -> c.getCategoryStatus().equals("ACTIVE"))
@@ -36,6 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+//    @PreAuthorize("hasAuthority('GET_CATEGORY_BY_ID')")
     public CategoryDTO getCategoryById(Long categoryId, Locale locale) {
         return categoryRepository.findById(categoryId)
                 .map(categoryMapper::toCategoryDTO)
@@ -43,6 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ADD_NEW_CATEGORY')")
     public CategoryDTO createCategory(CategoryRequest request) {
         Categories categories = categoryMapper.toCategory(request);
         categoryRepository.save(categories);
@@ -50,6 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('UPDATE_CATEGORY')")
     public CategoryDTO updateCategory(Long categoryId, CategoryRequest request, Locale locale) {
         Categories categories = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));
@@ -58,6 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('DELETE_CATEGORY')")
     public void deleteCategory(Long categoryId, Locale locale) {
         Categories category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));
@@ -65,6 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('INACTIVE_CATEGORY')")
     public CategoryDTO inActivateCategory(Long categoryId, Locale locale) {
         Categories categories = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));
@@ -77,6 +84,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('ACTIVE_CATEGORY')")
     public CategoryDTO activateCategory(Long categoryId, Locale locale) {
         Categories categories = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));

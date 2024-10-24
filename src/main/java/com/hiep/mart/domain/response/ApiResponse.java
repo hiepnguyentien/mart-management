@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PUBLIC)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-//@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class ApiResponse <T> {
     int code = 1000;
     String message;

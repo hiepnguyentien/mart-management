@@ -15,7 +15,7 @@ public interface ProductMapper {
     Products toProducts(ProductRequest request);
 
     @Mapping(source = "suppliers.supplierId", target = "supplierId")
-    @Mapping(source = "suppliers.supplierName", target = "supplierName")
+//    @Mapping(source = "suppliers.supplierName", target = "supplierName")
     ProductDTO toProductDTO(Products product);
 
     void updateProduct(@MappingTarget Products product, ProductRequest request);

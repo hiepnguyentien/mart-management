@@ -20,7 +20,7 @@ public class ProductDTO {
     String productBrand;
     Long inventoryQuantity;
     Long supplierId;
-    String supplierName;
+//    String supplierName;
     String information;
     Double discountPercentage;
     Double discountAmount;
