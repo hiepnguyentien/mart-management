@@ -21,7 +21,7 @@ public class Cart {
     Long quantity;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", unique = true)
+    @JoinColumn(name = "user_id")
     Users user;
 
     @ManyToOne

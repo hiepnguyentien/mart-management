@@ -7,6 +7,13 @@ public class Queries {
             "join public.categories c on c.category_id = cp.categories_category_id\n" +
             "where c.category_id = :categoryId";
 
+    public static final String GET_PRODUCT_QUANTITY_IN_CART_BY_USER = "select c.quantity\n" +
+            "    from cart c\n" +
+            "where c.product_id = :productId\n" +
+            "and c.user_id = :userId";
 
-
+    public static final String FIND_CART_BY_USER_AND_PRODUCT = "select *\n" +
+            "    from cart c \n" +
+            "where c.product_id = :productId\n" +
+            "and c.user_id = :userId";
 }

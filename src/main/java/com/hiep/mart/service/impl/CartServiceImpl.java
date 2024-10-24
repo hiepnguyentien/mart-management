@@ -1,7 +1,12 @@
 package com.hiep.mart.service.impl;
 
+import com.hiep.mart.domain.dto.ProductCartDTO;
+import com.hiep.mart.exception.AppException;
+import com.hiep.mart.exception.ErrorCode;
 import com.hiep.mart.service.UserService;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.hiep.mart.domain.dto.CartDTO;
@@ -15,6 +20,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+import java.util.Locale;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -23,27 +31,53 @@ public class CartServiceImpl implements CartService {
     CartRepository cartRepository;
     CartMapper cartMapper;
     UserService userService;
+    AuthenticationService authenticationService;
+    MessageSource messageSource;
 
     @Override
-    @PostAuthorize("returnObject.userId == authentication.userId")
-    public CartDTO addToCart(CartRequest request) {
-        Long userId = userService.getCurrentUserId();
+//    @PostAuthorize("returnObject.userId == authentication.userId")
+//    @PreAuthorize("hasAuthority('ADD_TO_CART')")
+    public CartDTO addToCart(CartRequest request, String authorizationHeader, Locale locale) throws AppException {
+        Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
         request.setUserId(userId);
+        Long productId = request.getProductId();
+        Long quantity = cartRepository.countByCustomerId(productId, userId);
+        if(quantity != null) {
+            throw new AppException(ErrorCode.PRODUCT_ALREADY_EXISTS, messageSource, locale);
+        }
         Cart cart = cartMapper.toCart(request);
         cartRepository.save(cart);
         return cartMapper.toCartDTO(cart);
     }
 
     @Override
-    public void removeFromCart(Long productId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeFromCart'");
+    public Long quantityInCart(Long productId, String authorizationHeader) {
+        Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
+        Long quantity = cartRepository.countByCustomerId(productId, userId);
+        if(quantity == null) {
+            return 0L;
+        }
+        else return quantity;
     }
 
     @Override
-    public void updateCart(Long productId, Long quantity) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateCart'");
+    public void removeFromCart(Long productId, String authorizationHeader, Locale locale) {
+        Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
+        Cart cart = cartRepository.findByCustomerIdAndProductId(userId, productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTS, messageSource, locale));
+        cartRepository.delete(cart);
+    }
+
+    @Override
+    public CartDTO updateCart(CartRequest request, String authorizationHeader, Locale locale) {
+        Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
+        request.setUserId(userId);
+        Long productId = request.getProductId();
+        Cart cart = cartRepository.findByCustomerIdAndProductId(userId, productId)
+                        .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTS, messageSource, locale));
+        cartMapper.updateCart(cart, request);
+        cartRepository.save(cart);
+        return cartMapper.toCartDTO(cart);
     }
 
     @Override
@@ -53,9 +87,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void viewCart() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'viewCart'");
+    public List<ProductCartDTO> viewCart(String authorizationHeader) {
+        Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
+        return cartRepository.viewCart(userId);
     }
     
 }
