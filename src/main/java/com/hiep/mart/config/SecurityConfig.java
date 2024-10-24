@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +24,7 @@ public class SecurityConfig {
             "/auth/refresh", "/auth/register"};
 
     private final String[] PUBLIC_ENDPOINTS_GET = {"/product/find-all", "product/find-by-id/{productId}",
-            "/category/find-all"};
+            "/category/find-all", "/product/category/{categoryId}","/product/find-by-name/{productName}"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
@@ -45,6 +46,16 @@ public class SecurityConfig {
                                         .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
         );
+
+        httpSecurity
+                .cors().configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowCredentials(true);
+                    config.addAllowedOrigin("http://localhost:3000");
+                    config.addAllowedHeader("*");
+                    config.addAllowedMethod("*");
+                    return config;
+                });
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
