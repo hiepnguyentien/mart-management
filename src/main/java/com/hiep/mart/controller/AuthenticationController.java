@@ -19,20 +19,19 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.Locale;
 
-//@CrossOrigin(origins = "*",  maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-//@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class AuthenticationController {
     AuthenticationService authenticationService;
     UserService userService;
 
-//    @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
     @PostMapping("/token")
+    @CrossOrigin
     ApiResponse<AuthenticationResponse> logIn(@RequestBody AuthenticationRequest authenticationRequest, @RequestParam(name = "lang", required = false) String lang) {
         Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
+        System.out.println("--------------" + authenticationRequest + "-------------");
         var result = authenticationService.authenticate(authenticationRequest, locale);
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(result)

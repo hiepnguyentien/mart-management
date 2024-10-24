@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-//@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class AuthenticationResponse {
     String token;
     boolean authenticated;

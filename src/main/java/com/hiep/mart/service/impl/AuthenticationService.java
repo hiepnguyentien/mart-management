@@ -25,10 +25,12 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.text.ParseException;
 import java.time.Instant;
@@ -85,7 +87,6 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.UNAUTHORIZED, messageSource, locale);
         }
         var token = generateToken(user);
-
         return AuthenticationResponse.builder()
                 .token(token)
                 .authenticated(true)
@@ -202,5 +203,24 @@ public class AuthenticationService {
             });
         }
         return stringJoiner.toString();
+    }
+
+    public Long getUserIdFromToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid Authorization header");
+        }
+
+        String token = authorizationHeader.substring(7);
+
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+
+            verifyToken(token, false);
+
+            JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();
+            return claimsSet.getLongClaim("userId");
+        } catch (ParseException | JOSEException e) {
+            throw new IllegalArgumentException("Invalid JWT token", e);
+        }
     }
 }
