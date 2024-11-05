@@ -16,4 +16,12 @@ public class Queries {
             "    from cart c \n" +
             "where c.product_id = :productId\n" +
             "and c.user_id = :userId";
+
+    public static final String FIND_DISTRICT_BY_PROVINCE_CODE = "select *\n" +
+            "    from districts\n" +
+            "        where province_code = :provinceCode";
+
+    public static final String FIND_WARD_BY_DISTRICT_CODE = "select *\n" +
+            "    from wards\n" +
+            "        where district_code = :districtCode;";
 }

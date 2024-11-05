@@ -45,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    @PostAuthorize("returnObject.username == authentication.name")
+//    @PostAuthorize("returnObject.username == authentication.name")
     public CustomerDTO viewProfile(Locale locale) {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
@@ -59,16 +59,16 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    @PostAuthorize("returnObject.username == authentication.name")
-    public CustomerDTO updateProfile(CustomerRequest request) {
+//    @PostAuthorize("returnObject.username == authentication.name")
+    public CustomerDTO updateProfile(CustomerRequest request, Locale locale) {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
 
         Users user = userRepository.findByUsername(name)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, messageSource, Locale.ENGLISH));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, messageSource, locale));
 
         Customers customer = customerRepository.findById(user.getCustomers().getCustomerId())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, messageSource, Locale.ENGLISH));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, messageSource, locale));
 
         customerMapper.updateCustomer(customer, request);
         customerRepository.save(customer);

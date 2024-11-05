@@ -8,7 +8,7 @@ import java.util.Locale;
 public interface CustomerService {
     CustomerDTO createCustomer(CustomerRequest request);
     CustomerDTO viewProfile(Locale locale);
-    CustomerDTO updateProfile(CustomerRequest request);
+    CustomerDTO updateProfile(CustomerRequest request, Locale locale);
     void changePassword(String currentPassword, String newPassword);
     void forgotPassword();
     void resetPassword();

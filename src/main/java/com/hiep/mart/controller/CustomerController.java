@@ -21,7 +21,7 @@ public class CustomerController {
     CustomerService customerService;
 
     @GetMapping("/info")
-    public ApiResponse<CustomerDTO> info(@Valid @RequestBody RegisterRequest registerRequest, @RequestParam(name = "lang", required = false) String lang) {
+    public ApiResponse<CustomerDTO> info(@RequestParam(name = "lang", required = false) String lang) {
         Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
         ApiResponse<CustomerDTO> apiResponse = new ApiResponse<>();
         apiResponse.setResult(customerService.viewProfile(locale));
@@ -32,6 +32,15 @@ public class CustomerController {
     ApiResponse<CustomerDTO> addCustomer(@RequestBody CustomerRequest request) {
         ApiResponse<CustomerDTO> apiResponse = new ApiResponse<>();
         apiResponse.setResult(customerService.createCustomer(request));
+        return apiResponse;
+    }
+
+    @PutMapping
+    ApiResponse<CustomerDTO> updateCustomer(@RequestBody CustomerRequest request,
+                                            @RequestParam(name = "lang", required = false) String lang) {
+        Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
+        ApiResponse<CustomerDTO> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(customerService.updateProfile(request, locale));
         return apiResponse;
     }
 }
