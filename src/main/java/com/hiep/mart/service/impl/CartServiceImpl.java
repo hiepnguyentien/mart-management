@@ -36,7 +36,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
 //    @PostAuthorize("returnObject.userId == authentication.userId")
-//    @PreAuthorize("hasAuthority('ADD_TO_CART')")
+    @PreAuthorize("hasAuthority('ADD_TO_CART')")
     public CartDTO addToCart(CartRequest request, String authorizationHeader, Locale locale) throws AppException {
         Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
         request.setUserId(userId);
@@ -51,6 +51,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('QUANTITY_IN_CART')")
     public Long quantityInCart(Long productId, String authorizationHeader) {
         Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
         Long quantity = cartRepository.countByCustomerId(productId, userId);
@@ -61,6 +62,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('REMOVE_FROM_CART')")
     public void removeFromCart(Long productId, String authorizationHeader, Locale locale) {
         Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
         Cart cart = cartRepository.findByCustomerIdAndProductId(userId, productId)
@@ -69,6 +71,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('UPDATE_CART')")
     public CartDTO updateCart(CartRequest request, String authorizationHeader, Locale locale) {
         Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
         request.setUserId(userId);
@@ -81,12 +84,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void clearCart() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clearCart'");
+    @PreAuthorize("hasAuthority('CLEAR_CART')")
+    public void clearCart(String authorizationHeader) {
+        Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
+        List<Cart> carts = cartRepository.findByUserId(userId);
+        cartRepository.deleteAll(carts);
     }
 
     @Override
+    @PreAuthorize("hasAuthority('VIEW_CART')")
     public List<ProductCartDTO> viewCart(String authorizationHeader) {
         Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
         return cartRepository.viewCart(userId);

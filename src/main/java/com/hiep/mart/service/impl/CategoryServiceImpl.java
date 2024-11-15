@@ -29,7 +29,6 @@ public class CategoryServiceImpl implements CategoryService {
     MessageSource messageSource;
 
     @Override
-//    @PreAuthorize("hasAuthority('GET_ALL_CATEGORY')")
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll().stream()
                 .filter(c -> c.getCategoryStatus().equals("ACTIVE"))
@@ -38,7 +37,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-//    @PreAuthorize("hasAuthority('GET_CATEGORY_BY_ID')")
     public CategoryDTO getCategoryById(Long categoryId, Locale locale) {
         return categoryRepository.findById(categoryId)
                 .map(categoryMapper::toCategoryDTO)

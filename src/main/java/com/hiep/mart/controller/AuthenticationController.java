@@ -4,6 +4,7 @@ import com.hiep.mart.domain.dto.IntrospectResponse;
 import com.hiep.mart.domain.dto.UserDTO;
 import com.hiep.mart.domain.request.AuthenticationRequest;
 import com.hiep.mart.domain.request.IntrospectRequest;
+import com.hiep.mart.domain.request.LogoutRequest;
 import com.hiep.mart.domain.request.RegisterRequest;
 import com.hiep.mart.domain.response.ApiResponse;
 import com.hiep.mart.domain.response.AuthenticationResponse;
@@ -31,7 +32,6 @@ public class AuthenticationController {
     @CrossOrigin
     ApiResponse<AuthenticationResponse> logIn(@RequestBody AuthenticationRequest authenticationRequest, @RequestParam(name = "lang", required = false) String lang) {
         Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
-        System.out.println("--------------" + authenticationRequest + "-------------");
         var result = authenticationService.authenticate(authenticationRequest, locale);
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(result)
@@ -53,5 +53,13 @@ public class AuthenticationController {
         ApiResponse<UserDTO> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.registerUser(registerRequest, locale));
         return apiResponse;
+    }
+
+    @PostMapping("/auth/logout")
+    ApiResponse<Void> logout(@RequestBody LogoutRequest introspectRequest)
+            throws ParseException, JOSEException {
+        authenticationService.logout(introspectRequest);
+        return ApiResponse.<Void>builder()
+                .build();
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.hiep.mart.domain.entity.Cart;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,4 +17,7 @@ public interface CartRepository extends JpaRepository<Cart, Long>, CartRepositor
 
     @Query(nativeQuery = true, value = Queries.FIND_CART_BY_USER_AND_PRODUCT)
     Optional<Cart> findByCustomerIdAndProductId(Long userId, Long productId);
+
+    @Query(nativeQuery = true, value = Queries.FIND_ALL_BY_USER)
+    List<Cart> findByUserId(Long userId);
 }

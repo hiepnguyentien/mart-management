@@ -12,6 +12,6 @@ public interface CartService {
     Long quantityInCart(Long productId, String authorizationHeader);
     void removeFromCart(Long productId, String authorizationHeader, Locale locale);
     CartDTO updateCart(CartRequest request, String authorizationHeader, Locale locale);
-    void clearCart();
+    void clearCart(String authorizationHeader);
     List<ProductCartDTO> viewCart(String authorizationHeader);
 }

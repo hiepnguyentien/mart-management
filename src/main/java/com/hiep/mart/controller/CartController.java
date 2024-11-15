@@ -57,4 +57,9 @@ public class CartController {
         Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
         cartService.removeFromCart(productId, authorizationHeader, locale);
     }
+
+    @DeleteMapping("/delete-all")
+    public void removeAllFromCart(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+        cartService.clearCart(authorizationHeader);
+    }
 }
