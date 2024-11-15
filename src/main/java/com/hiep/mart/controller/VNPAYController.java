@@ -1,47 +1,110 @@
 package com.hiep.mart.controller;
 
-import com.hiep.mart.service.impl.VNPAYService;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.hiep.mart.config.VNPAYConfig;
+import com.hiep.mart.domain.dto.PaymentRestDTO;
+import com.hiep.mart.domain.dto.TransactionStatusDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+@RestController
+@RequestMapping("/payment")
 public class VNPAYController {
-        @Autowired
-        private VNPAYService vnPayService;
 
-        @GetMapping({"", "/"})
-        public String home(){
-            return "createOrder";
+    @GetMapping("/create-payment")
+    public ResponseEntity<?> createPayment() throws UnsupportedEncodingException {
+
+//        String orderType = "other";
+//        long amount = Integer.parseInt(req.getParameter("amount"))*100;
+//        String bankCode = req.getParameter("bankCode");
+
+        long amount = 1000000*100;
+
+        String vnp_TxnRef = VNPAYConfig.getRandomNumber(8);
+//        String vnp_IpAddr = VNPAYConfig.getIpAddress(req);
+        String vnp_TmnCode = VNPAYConfig.vnp_TmnCode;
+
+        Map<String, String> vnp_Params = new HashMap<>();
+        vnp_Params.put("vnp_Version", VNPAYConfig.vnp_Version);
+        vnp_Params.put("vnp_Command", VNPAYConfig.vnp_Command);
+        vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.put("vnp_Amount", String.valueOf(amount));
+        vnp_Params.put("vnp_CurrCode", "VND");
+        vnp_Params.put("vnp_BankCode", "NCB");
+        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+        vnp_Params.put("vnp_Locale", "vn");
+        vnp_Params.put("vnp_IpAddr", "192.168.30.16");
+        vnp_Params.put("vnp_OrderType", "other");
+        vnp_Params.put("vnp_ReturnUrl", "http://localhost:8080/vnpay_jsp/vnpay_return.jsp");
+
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_CreateDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+
+        cld.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+        List fieldNames = new ArrayList(vnp_Params.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder hashData = new StringBuilder();
+        StringBuilder query = new StringBuilder();
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) vnp_Params.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                //Build hash data
+                hashData.append(fieldName);
+                hashData.append('=');
+                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                //Build query
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                query.append('=');
+                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                if (itr.hasNext()) {
+                    query.append('&');
+                    hashData.append('&');
+                }
+            }
         }
+        String queryUrl = query.toString();
+        String vnp_SecureHash = VNPAYConfig.hmacSHA512(VNPAYConfig.secretKey, hashData.toString());
+        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+        String paymentUrl = VNPAYConfig.vnp_PayUrl + "?" + queryUrl;
 
-        // Chuyển hướng người dùng đến cổng thanh toán VNPAY
-        @PostMapping("/submitOrder")
-        public String submidOrder(@RequestParam("amount") int orderTotal,
-                                  @RequestParam("orderInfo") String orderInfo,
-                                  HttpServletRequest request){
-            String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-            String vnpayUrl = vnPayService.createOrder(request, orderTotal, orderInfo, baseUrl);
-            return "redirect:" + vnpayUrl;
+        PaymentRestDTO paymentRestDTO = new PaymentRestDTO();
+        paymentRestDTO.setStatus("Ok");
+        paymentRestDTO.setMessage("Successfully");
+        paymentRestDTO.setUrl(paymentUrl);
+        return ResponseEntity.status(HttpStatus.OK).body(paymentRestDTO);
+    }
+
+    @GetMapping("/payment-info")
+    public ResponseEntity<?> transaction(
+            @RequestParam(value = "vop_Amount") String amount,
+            @RequestParam(value = "vnp_BankCode") String bankCode,
+            @RequestParam(value = "vnp_OrderInfo") String orderInfo,
+            @RequestParam(value = "vnp_ResponseCode") String responseCode){
+
+        TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
+        if(responseCode.equals("00")){
+            transactionStatusDTO.setStatus("OK");
+            transactionStatusDTO.setMessage("Successfully");
+            transactionStatusDTO.setData("");
+        } else {
+            transactionStatusDTO.setStatus("No");
+            transactionStatusDTO.setMessage("Failed");
+            transactionStatusDTO.setData("");
         }
-
-        // Sau khi hoàn tất thanh toán, VNPAY sẽ chuyển hướng trình duyệt về URL này
-        @GetMapping("/vnpay-payment-return")
-        public String paymentCompleted(HttpServletRequest request, Model model) {
-            int paymentStatus = vnPayService.orderReturn(request);
-
-            String orderInfo = request.getParameter("vnp_OrderInfo");
-            String paymentTime = request.getParameter("vnp_PayDate");
-            String transactionId = request.getParameter("vnp_TransactionNo");
-            String totalPrice = request.getParameter("vnp_Amount");
-
-            model.addAttribute("orderId", orderInfo);
-            model.addAttribute("totalPrice", totalPrice);
-            model.addAttribute("paymentTime", paymentTime);
-            model.addAttribute("transactionId", transactionId);
-
-            return paymentStatus == 1 ? "ordersuccess" : "orderfail";
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(transactionStatusDTO);
+    }
 }

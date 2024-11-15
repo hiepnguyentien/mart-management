@@ -36,7 +36,7 @@ public class VNPAYService {
         String locate = "vn";
         vnp_Params.put("vnp_Locale", locate);
 
-        urlReturn += VNPAYConfig.vnp_Returnurl;
+//        urlReturn += VNPAYConfig.vnp_Returnurl;
         vnp_Params.put("vnp_ReturnUrl", urlReturn);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
@@ -77,9 +77,9 @@ public class VNPAYService {
             }
         }
         String queryUrl = query.toString();
-        String salt = VNPAYConfig.vnp_HashSecret;
-        String vnp_SecureHash = VNPAYConfig.hmacSHA512(salt, hashData.toString());
-        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+//        String salt = VNPAYConfig.vnp_HashSecret;
+//        String vnp_SecureHash = VNPAYConfig.hmacSHA512(salt, hashData.toString());
+//        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = VNPAYConfig.vnp_PayUrl + "?" + queryUrl;
         return paymentUrl;
     }
