@@ -13,7 +13,7 @@ public interface ProductService {
     List<ProductDTO> getAllActiveProducts();
     ProductDTO getProductById(Long id, Locale locale);
     List<ProductDTO> getProductsByName(String name);
-    ProductDTO createProduct(ProductRequest request, MultipartFile file) throws IOException;
+    ProductDTO createProduct(ProductRequest request);
     ProductDTO updateProduct(Long id, ProductRequest request, Locale locale);
     void deleteProduct(Long id, Locale locale);
     ProductDTO inActiveProduct(Long id, Locale locale);
@@ -31,4 +31,6 @@ public interface ProductService {
     List<ProductDTO> getProductsByPromotion(Double discountPercentage);
 
     ProductDTO addProductToCart(Long productId, Long cartId, Locale locale);
+    List<ProductDTO> getExpiredProducts();
+    List<ProductDTO> getExpireIn7DaysProducts();
 }
