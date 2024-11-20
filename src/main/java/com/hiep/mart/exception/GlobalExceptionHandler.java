@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     }
 
     @SuppressWarnings("rawtypes")
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception, Locale locale) {
         ApiResponse apiResponse = new ApiResponse();
 
