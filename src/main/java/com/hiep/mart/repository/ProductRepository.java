@@ -13,4 +13,5 @@ public interface ProductRepository extends JpaRepository<Products, Long>, Produc
 
     @Query(nativeQuery = true, value = Queries.SEARCH_PRODUCT_BY_CATEGORY)
     List<Products> findByCategory(Long categoryId);
+
 }
