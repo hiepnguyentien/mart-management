@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatusCode;
 public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(99999, "uncategorized.exception", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(90000, "invalid.key", HttpStatus.BAD_REQUEST),
+    JSON_INVALID(90001, "json.invalid", HttpStatus.BAD_REQUEST),
 
     QUANTITY_MUST_GREATER_THAN_ZERO(1, "quantity.must.greater.than.zero", HttpStatus.BAD_REQUEST),
     PRICE_MUST_GREATER_THAN_ZERO(2, "price.must.greater.than.zero", HttpStatus.BAD_REQUEST),
@@ -33,7 +34,7 @@ public enum ErrorCode {
 
     PROMOTION_NOT_FOUND(8001, "promotion.not.found", HttpStatus.BAD_REQUEST),
 
-    SHIFT_NOT_FOUND(9001, "shift.not.found", HttpStatus.BAD_REQUEST),
+    BATCH_NOT_FOUND(9001, "batch.not.found", HttpStatus.BAD_REQUEST),
 
     UNAUTHORIZED(90001, "unauthorized", HttpStatus.FORBIDDEN),
     UNAUTHENTICATED(90002, "unauthenticated", HttpStatus.UNAUTHORIZED),
