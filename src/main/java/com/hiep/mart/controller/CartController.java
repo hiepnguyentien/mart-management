@@ -51,9 +51,9 @@ public class CartController {
     }
 
     @DeleteMapping("/delete/{productId}")
-    public void removeFromCart(@RequestParam Long productId,
+    public void removeFromCart(@PathVariable  Long productId,
                                @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-                               @RequestParam(name = "lang", required = false) String lang) {
+                               @PathVariable (name = "lang", required = false) String lang) {
         Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
         cartService.removeFromCart(productId, authorizationHeader, locale);
     }
