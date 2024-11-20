@@ -90,10 +90,9 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     @PreAuthorize("hasAuthority('ADD_NEW_PRODUCT')")
-    public ProductDTO createProduct(ProductRequest request, MultipartFile file) throws IOException {
-        String imageUrl = (String) cloudinaryService.uploadImage(file).get("url");
+    public ProductDTO createProduct(ProductRequest request) {
         Products product = productMapper.toProducts(request);
-        product.setProductImage(imageUrl);
+        product.setProductStatus("Active");
         productRepository.save(product);
         return productMapper.toProductDTO(product);
     }
@@ -204,5 +203,16 @@ public class ProductServiceImpl implements ProductService{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addProductToCart'");
     }
-    
+
+    @Override
+    public List<ProductDTO> getExpiredProducts() {
+//        return productRepository.
+        return List.of();
+    }
+
+    @Override
+    public List<ProductDTO> getExpireIn7DaysProducts() {
+        return List.of();
+    }
+
 }
