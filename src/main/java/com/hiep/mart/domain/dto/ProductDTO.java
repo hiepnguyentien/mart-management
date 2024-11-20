@@ -29,6 +29,6 @@ public class ProductDTO {
     public Double getPromotionalPrice() {
         if (getDiscountAmount() == null)
             return getProductPrice();
-        return getProductPrice() - getProductPrice()*getDiscountAmount()/100;
+        return getProductPrice() - getProductPrice()*getDiscountPercentage()/100;
     }
 }
