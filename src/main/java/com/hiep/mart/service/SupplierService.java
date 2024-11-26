@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Locale;
 
 public interface SupplierService {
-    List<SupplierDTO> getSuppliers();
-    List<SupplierDTO> getSuppliers(String name);
+    List<SupplierDTO> getAllSuppliers();
+    List<SupplierDTO> getSuppliersByName(String name);
     SupplierDTO getSupplierById(Long id, Locale locale);
-    SupplierDTO createSupplier(SupplierRequest request);
+    SupplierDTO addSupplier(SupplierRequest request);
+    void deleteSupplier(Long id, Locale locale);
 }
