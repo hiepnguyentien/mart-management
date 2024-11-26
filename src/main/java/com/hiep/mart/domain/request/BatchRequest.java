@@ -20,7 +20,6 @@ public class BatchRequest {
     @NotNull(message = "Batch price cannot be null")
     @Min(value = 0, message = "Batch price must be greater than or equal to 0")
     Double batchPrice;
-    LocalDate importDate;
     @NotNull(message = "Expired date cannot be null")
     @Future(message = "Expired date must be in the future")
     LocalDate expiredDate;

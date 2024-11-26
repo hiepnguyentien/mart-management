@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.hiep.mart.domain.entity.Batch;
 
 @Repository
-public interface BatchRepository extends JpaRepository<Batch, Long>{
+public interface BatchRepository extends JpaRepository<Batch, Long>, BatchRepositoryCustom{
     
 }
