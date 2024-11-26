@@ -21,6 +21,8 @@ public enum ErrorCode {
     CATEGORY_NOT_FOUND(2001, "category.not.found", HttpStatus.BAD_REQUEST),
 
     SUPPLIER_NOT_FOUND(3001, "supplier.not.found", HttpStatus.BAD_REQUEST),
+    SUPPLIER_ALREADY_ACTIVE(3002, "supplier.already.active", HttpStatus.BAD_REQUEST),
+    SUPPLIER_ALREADY_INACTIVE(3003, "supplier.already.inactive", HttpStatus.BAD_REQUEST),
 
     CART_NOT_FOUND(4001, "cart.not.found", HttpStatus.BAD_REQUEST),
     PRODUCT_ALREADY_EXISTS(4002, "product.already.exists", HttpStatus.BAD_REQUEST),
