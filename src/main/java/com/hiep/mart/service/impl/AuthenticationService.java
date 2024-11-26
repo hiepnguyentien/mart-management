@@ -223,4 +223,8 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Invalid JWT token", e);
         }
     }
+
+    public Long getCustomerIdFromUserId(Long userId) {
+        return userRepository.findCustomerIdByUserId(userId);
+    }
 }
