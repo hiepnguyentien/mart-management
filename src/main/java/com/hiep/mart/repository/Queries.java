@@ -28,4 +28,12 @@ public class Queries {
     public static final String FIND_WARD_BY_DISTRICT_CODE = "select *\n" +
             "    from wards\n" +
             "        where district_code = :districtCode;";
+
+    public static final String FIND_BY_CUSTOMER_ID = "SELECT *\n" +
+            "from orders o\n" +
+            "where o.customers.customer_id = :customerId";
+
+    public static final String FIND_BY_ORDER_ID = "SELECT *\n" +
+            "from order_detail od\n" +
+            "where od.orders.order_id = :orderId";
 }

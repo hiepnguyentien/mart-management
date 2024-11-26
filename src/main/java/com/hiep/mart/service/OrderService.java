@@ -1,8 +1,14 @@
 package com.hiep.mart.service;
 
+import com.hiep.mart.domain.dto.OrderDTO;
+import com.hiep.mart.domain.request.OrderRequest;
+
+import java.util.List;
+
 public interface OrderService {
-    void viewOrder();
-    void createOrder();
+    List<OrderDTO> viewAllOrder();
+    List<OrderDTO> viewOrderByCustomerId(Long customerId);
+    OrderDTO addOrder(OrderRequest request);
     void updateOrder();
     void cancelOrder();
     void viewOrderStatus();
