@@ -1,6 +1,5 @@
 package com.hiep.mart.service.impl;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -22,8 +21,6 @@ import com.hiep.mart.service.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +30,6 @@ public class ProductServiceImpl implements ProductService{
     ProductRepository productRepository;
     ProductMapper productMapper;
     MessageSource messageSource;
-    CloudinaryService cloudinaryService;
 
     @Override
 //    @PreAuthorize("hasAuthority('GET_ALL_ACTIVE_PRODUCT')")
@@ -85,7 +81,6 @@ public class ProductServiceImpl implements ProductService{
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     @Transactional

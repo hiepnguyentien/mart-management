@@ -4,12 +4,8 @@ import com.hiep.mart.config.AppObjectMapper;
 import com.hiep.mart.domain.dto.ProductDTO;
 import com.hiep.mart.domain.request.ProductRequest;
 import com.hiep.mart.domain.response.ApiResponse;
-import com.hiep.mart.exception.AppException;
-import com.hiep.mart.exception.ErrorCode;
 import com.hiep.mart.service.ProductService;
 import com.hiep.mart.service.impl.CloudinaryService;
-import jakarta.validation.Valid;
-import jdk.jfr.ContentType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -86,7 +82,6 @@ public class ProductController {
         System.out.println(request);
         System.out.println(productRequest);
 
-
         String imageUrl = null;
 
         if (file != null && !file.isEmpty()) {
@@ -101,8 +96,6 @@ public class ProductController {
         apiResponse.setResult(createdProduct);
         return ResponseEntity.ok(apiResponse);
     }
-
-
 
     @PutMapping("/active/{id}")
     public ProductDTO activeProduct(@PathVariable Long id,
