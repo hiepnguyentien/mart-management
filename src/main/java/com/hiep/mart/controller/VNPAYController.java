@@ -1,10 +1,15 @@
 package com.hiep.mart.controller;
 
 import com.hiep.mart.config.VNPAYConfig;
-import com.hiep.mart.domain.dto.PaymentRestDTO;
-import com.hiep.mart.domain.dto.TransactionStatusDTO;
+import com.hiep.mart.domain.dto.*;
+import com.hiep.mart.service.CartService;
+import com.hiep.mart.service.OrderService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -15,16 +20,22 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/payment")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VNPAYController {
 
-    @GetMapping("/create-payment")
-    public ResponseEntity<?> createPayment() throws UnsupportedEncodingException {
+    OrderService orderService;
+    CartService cartService;
+
+    @PostMapping("/create-payment")
+    @PreAuthorize("hasAuthority('CREATE_PAYMENT')")
+    public ResponseEntity<?> createPayment(@RequestBody Long cost) throws UnsupportedEncodingException {
 
 //        String orderType = "other";
 //        long amount = Integer.parseInt(req.getParameter("amount"))*100;
 //        String bankCode = req.getParameter("bankCode");
 
-        long amount = 1000000*100;
+        long amount = cost*100;
 
         String vnp_TxnRef = VNPAYConfig.getRandomNumber(8);
 //        String vnp_IpAddr = VNPAYConfig.getIpAddress(req);
@@ -40,9 +51,10 @@ public class VNPAYController {
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_IpAddr", "192.168.30.16");
+        vnp_Params.put("vnp_IpAddr", "192.168.30.16"); //ip cong ty
+//        vnp_Params.put("vnp_IpAddr", "192.168.125.22"); // ip 4g ca nhan
         vnp_Params.put("vnp_OrderType", "other");
-        vnp_Params.put("vnp_ReturnUrl", "http://localhost:8080/vnpay_jsp/vnpay_return.jsp");
+        vnp_Params.put("vnp_ReturnUrl", "http://localhost:3000/");
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -85,6 +97,7 @@ public class VNPAYController {
         paymentRestDTO.setStatus("Ok");
         paymentRestDTO.setMessage("Successfully");
         paymentRestDTO.setUrl(paymentUrl);
+
         return ResponseEntity.status(HttpStatus.OK).body(paymentRestDTO);
     }
 
