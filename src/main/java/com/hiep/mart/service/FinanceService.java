@@ -1,10 +1,11 @@
 package com.hiep.mart.service;
 
-public interface Finance {
-    void viewBalance();
-    void viewTransactionHistory();
-    void viewTransactionDetail(Long transactionId);
-    void viewTransactionStatus(Long transactionId);
-    void viewTransactionInvoice(Long transactionId);
-    void viewTransactionReceipt(Long transactionId);
+import com.hiep.mart.domain.dto.FinanceDTO;
+import com.hiep.mart.domain.request.FinanceRequest;
+
+import java.util.List;
+
+public interface FinanceService {
+    List<FinanceDTO> findAllFinances();
+    void addFinance(FinanceRequest request);
 }
