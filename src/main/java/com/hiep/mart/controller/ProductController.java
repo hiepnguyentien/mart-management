@@ -73,10 +73,10 @@ public class ProductController {
         return productService.getProductsByName(name);
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping
     public ResponseEntity<ApiResponse<ProductDTO>> createProduct(
-            @RequestPart(value = "request") String request,
-            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+            @RequestParam(value = "request") String request,
+            @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
 
         ProductRequest productRequest = appObjectMapper.toPojo(request, ProductRequest.class);
         System.out.println(request);
