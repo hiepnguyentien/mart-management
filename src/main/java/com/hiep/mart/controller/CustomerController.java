@@ -2,10 +2,8 @@ package com.hiep.mart.controller;
 
 import com.hiep.mart.domain.dto.CustomerDTO;
 import com.hiep.mart.domain.request.CustomerRequest;
-import com.hiep.mart.domain.request.RegisterRequest;
 import com.hiep.mart.domain.response.ApiResponse;
 import com.hiep.mart.service.CustomerService;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

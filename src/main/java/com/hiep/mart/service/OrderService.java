@@ -9,6 +9,7 @@ public interface OrderService {
     List<OrderDTO> viewAllOrder();
     List<OrderDTO> viewOrderByCustomerId(Long customerId);
     OrderDTO addOrder(OrderRequest request);
+    OrderDTO updateOrder(Long orderId, OrderRequest request);
     void updateOrder();
     void cancelOrder();
     void viewOrderStatus();

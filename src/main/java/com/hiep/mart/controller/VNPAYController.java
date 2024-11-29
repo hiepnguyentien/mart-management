@@ -2,11 +2,21 @@ package com.hiep.mart.controller;
 
 import com.hiep.mart.config.VNPAYConfig;
 import com.hiep.mart.domain.dto.*;
+import com.hiep.mart.domain.enumeration.TypeOfTransaction;
+import com.hiep.mart.domain.request.FinanceRequest;
+import com.hiep.mart.domain.request.OrderDetailRequest;
+import com.hiep.mart.domain.request.OrderRequest;
+import com.hiep.mart.domain.response.ApiResponse;
 import com.hiep.mart.service.CartService;
+import com.hiep.mart.service.FinanceService;
+import com.hiep.mart.service.OrderDetailService;
 import com.hiep.mart.service.OrderService;
+import com.hiep.mart.service.impl.AuthenticationService;
+import com.hiep.mart.service.impl.PaymentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +26,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 @RestController
@@ -24,8 +36,7 @@ import java.util.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VNPAYController {
 
-    OrderService orderService;
-    CartService cartService;
+    PaymentService paymentService;
 
     @PostMapping("/create-payment")
     @PreAuthorize("hasAuthority('CREATE_PAYMENT')")
@@ -54,7 +65,7 @@ public class VNPAYController {
         vnp_Params.put("vnp_IpAddr", "192.168.30.16"); //ip cong ty
 //        vnp_Params.put("vnp_IpAddr", "192.168.125.22"); // ip 4g ca nhan
         vnp_Params.put("vnp_OrderType", "other");
-        vnp_Params.put("vnp_ReturnUrl", "http://localhost:3000/");
+        vnp_Params.put("vnp_ReturnUrl", "http://localhost:3000/payment/payment-info");
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -102,22 +113,17 @@ public class VNPAYController {
     }
 
     @GetMapping("/payment-info")
-    public ResponseEntity<?> transaction(
-            @RequestParam(value = "vop_Amount") String amount,
+    public ApiResponse<PaymentResponseDTO> transaction(
+            @RequestParam(value = "vnp_Amount") String amount,
             @RequestParam(value = "vnp_BankCode") String bankCode,
             @RequestParam(value = "vnp_OrderInfo") String orderInfo,
-            @RequestParam(value = "vnp_ResponseCode") String responseCode){
+            @RequestParam(value = "vnp_ResponseCode") String responseCode,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
 
-        TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
-        if(responseCode.equals("00")){
-            transactionStatusDTO.setStatus("OK");
-            transactionStatusDTO.setMessage("Successfully");
-            transactionStatusDTO.setData("");
-        } else {
-            transactionStatusDTO.setStatus("No");
-            transactionStatusDTO.setMessage("Failed");
-            transactionStatusDTO.setData("");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(transactionStatusDTO);
+        ApiResponse<PaymentResponseDTO> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(paymentService.handleTransaction(
+                authorizationHeader, amount, bankCode, orderInfo, responseCode));
+        return apiResponse;
     }
+
 }

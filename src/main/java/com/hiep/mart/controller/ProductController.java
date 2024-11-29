@@ -1,6 +1,7 @@
 package com.hiep.mart.controller;
 
 import com.hiep.mart.config.AppObjectMapper;
+import com.hiep.mart.domain.dto.CustomerDTO;
 import com.hiep.mart.domain.dto.ProductDTO;
 import com.hiep.mart.domain.request.ProductRequest;
 import com.hiep.mart.domain.response.ApiResponse;
@@ -41,14 +42,7 @@ public class ProductController {
 
     @GetMapping("/find-all")
     public List<ProductDTO> findAllActiveProducts() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_MANAGER") ||
-                        grantedAuthority.getAuthority().equals("ROLE_SALE_STAFF"))) {
             return productService.getAllProducts();
-        } else {
-            return productService.getAllActiveProducts();
-        }
     }
 
     @GetMapping("/find-by-id/{productId}")
@@ -95,6 +89,16 @@ public class ProductController {
         ApiResponse<ProductDTO> apiResponse = new ApiResponse<>();
         apiResponse.setResult(createdProduct);
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @PutMapping("/update/{productId}")
+    public ApiResponse<ProductDTO> updateProduct(@PathVariable Long productId,
+                                                 @RequestBody ProductRequest request,
+                                                 @RequestParam(name = "lang", required = false) String lang){
+        Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
+        ApiResponse<ProductDTO> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(productService.updateProduct(productId, request, locale));
+        return apiResponse;
     }
 
     @PutMapping("/active/{id}")

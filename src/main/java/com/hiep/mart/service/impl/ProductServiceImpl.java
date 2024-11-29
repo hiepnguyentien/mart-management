@@ -32,7 +32,6 @@ public class ProductServiceImpl implements ProductService{
     MessageSource messageSource;
 
     @Override
-//    @PreAuthorize("hasAuthority('GET_ALL_ACTIVE_PRODUCT')")
     public List<ProductDTO> getAllActiveProducts() {
         return productRepository.findAll().stream()
                 .filter(p -> p.getProductStatus().equals("Active"))
