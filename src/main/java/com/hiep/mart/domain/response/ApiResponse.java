@@ -3,7 +3,6 @@ package com.hiep.mart.domain.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Data
 @Builder

@@ -1,10 +1,8 @@
 package com.hiep.mart.service.impl;
 
 import com.hiep.mart.domain.dto.IntrospectResponse;
-import com.hiep.mart.domain.dto.UserDTO;
 import com.hiep.mart.domain.entity.InvalidatedToken;
 import com.hiep.mart.domain.entity.Users;
-import com.hiep.mart.domain.mapper.UserMapper;
 import com.hiep.mart.domain.request.AuthenticationRequest;
 import com.hiep.mart.domain.request.IntrospectRequest;
 import com.hiep.mart.domain.request.LogoutRequest;

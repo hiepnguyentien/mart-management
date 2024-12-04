@@ -1,6 +1,5 @@
 package com.hiep.mart.domain.dto;
 
-import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

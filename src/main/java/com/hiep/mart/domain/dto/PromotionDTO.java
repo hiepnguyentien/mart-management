@@ -1,8 +1,6 @@
 package com.hiep.mart.domain.dto;
 
 import com.hiep.mart.domain.enumeration.PromotionType;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

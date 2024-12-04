@@ -2,8 +2,6 @@ package com.hiep.mart.domain.entity;
 
 import java.util.Set;
 
-//import org.apache.logging.log4j.core.tools.picocli.CommandLine.Help.Ansi.Text;
-
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

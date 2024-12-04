@@ -2,7 +2,6 @@ package com.hiep.mart.service.impl;
 
 import com.hiep.mart.domain.dto.BatchDTO;
 import com.hiep.mart.domain.entity.Batch;
-import com.hiep.mart.domain.entity.Products;
 import com.hiep.mart.domain.enumeration.TypeOfTransaction;
 import com.hiep.mart.domain.mapper.BatchMapper;
 import com.hiep.mart.domain.request.BatchRequest;
@@ -15,7 +14,6 @@ import com.hiep.mart.service.BatchService;
 import com.hiep.mart.service.FinanceService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.MessageSource;
@@ -23,10 +21,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

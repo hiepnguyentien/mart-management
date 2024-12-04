@@ -1,6 +1,5 @@
 package com.hiep.mart.service.impl;
 
-import com.hiep.mart.domain.entity.Customers;
 import com.hiep.mart.domain.entity.Role;
 import com.hiep.mart.domain.entity.Users;
 import com.hiep.mart.domain.mapper.RoleMapper;
@@ -16,7 +15,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;

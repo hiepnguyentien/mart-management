@@ -1,7 +1,6 @@
 package com.hiep.mart.controller;
 
 import com.hiep.mart.domain.dto.OrderDetailDTO;
-import com.hiep.mart.domain.entity.OrderDetail;
 import com.hiep.mart.service.OrderDetailService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

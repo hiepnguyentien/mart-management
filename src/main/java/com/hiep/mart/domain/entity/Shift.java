@@ -2,7 +2,6 @@ package com.hiep.mart.domain.entity;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.*;

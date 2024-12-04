@@ -7,8 +7,6 @@ import com.hiep.mart.domain.entity.Customers;
 import com.hiep.mart.domain.entity.Role;
 import com.hiep.mart.domain.entity.Users;
 import com.hiep.mart.domain.mapper.UserMapper;
-import com.hiep.mart.domain.request.AuthenticationRequest;
-import com.hiep.mart.domain.request.CustomerRequest;
 import com.hiep.mart.domain.request.RegisterRequest;
 import com.hiep.mart.exception.AppException;
 import com.hiep.mart.exception.ErrorCode;
@@ -23,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

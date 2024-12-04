@@ -1,7 +1,6 @@
 package com.hiep.mart.controller;
 
 import com.hiep.mart.config.AppObjectMapper;
-import com.hiep.mart.domain.dto.CustomerDTO;
 import com.hiep.mart.domain.dto.ProductDTO;
 import com.hiep.mart.domain.request.ProductRequest;
 import com.hiep.mart.domain.response.ApiResponse;
@@ -11,12 +10,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 
-
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

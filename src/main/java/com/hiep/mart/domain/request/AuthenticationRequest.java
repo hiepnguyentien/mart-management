@@ -1,6 +1,5 @@
 package com.hiep.mart.domain.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
