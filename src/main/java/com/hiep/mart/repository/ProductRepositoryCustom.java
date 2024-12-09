@@ -9,4 +9,5 @@ public interface ProductRepositoryCustom {
     List<ProductDTO> getProductBySupplierId(Long supplierId);
     List<ProductDTO> getExpiredProducts();
     List<ProductDTO> getExpireIn7DaysProducts();
+    ProductDTO getProductById(Long productId);
 }
