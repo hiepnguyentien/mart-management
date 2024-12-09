@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import com.hiep.mart.domain.entity.Categories;
 import com.hiep.mart.domain.entity.Products;
 import com.hiep.mart.exception.AppException;
 import com.hiep.mart.exception.ErrorCode;
+import com.hiep.mart.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +30,7 @@ import lombok.experimental.FieldDefaults;
 public class ProductServiceImpl implements ProductService{
     
     ProductRepository productRepository;
+    CategoryRepository categoryRepository;
     ProductMapper productMapper;
     MessageSource messageSource;
 
@@ -66,9 +69,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
 //    @PreAuthorize("hasAuthority('GET_PRODUCT_BY_ID')")
     public ProductDTO getProductById(Long id, Locale locale) {
-        return productRepository.findById(id)
-                .map(productMapper::toProductDTO)
-                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND, messageSource, locale));
+        return productRepository.getProductById(id);
     }
 
     @Override
@@ -139,6 +140,20 @@ public class ProductServiceImpl implements ProductService{
         products.setProductStatus("Active");
         productRepository.save(products);
         return productMapper.toProductDTO(products);
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('ADD_PRODUCT_TO_CATEGORY')")
+    public void addProductToCategory(Long categoryId, Long productId, Locale locale) {
+        Products product = productRepository.findById(productId)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND, messageSource, locale));
+
+        Categories category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));
+        System.out.println(product + " " + category);
+        product.getCategories().add(category);
+        category.getProducts().add(product);
+        productRepository.save(product);
     }
 
     @Override

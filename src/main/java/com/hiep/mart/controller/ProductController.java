@@ -86,6 +86,14 @@ public class ProductController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @PostMapping("/add-product-categoty/{categoryId}/{productId}")
+    public void addProductCategory(@PathVariable Long categoryId,
+                                   @PathVariable Long productId,
+                                   @RequestParam(name = "lang", required = false) String lang) {
+        Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
+        productService.addProductToCategory(categoryId, productId, locale);
+    }
+
     @PutMapping("/update/{productId}")
     public ApiResponse<ProductDTO> updateProduct(@PathVariable Long productId,
                                                  @RequestBody ProductRequest request,
