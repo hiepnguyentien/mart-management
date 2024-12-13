@@ -8,6 +8,7 @@ import java.util.Locale;
 
 public interface CategoryService {
     List<CategoryDTO> getAllCategories();
+    List<CategoryDTO> getAllActiveCategories();
     CategoryDTO getCategoryById(Long id, Locale locale);
     CategoryDTO createCategory(CategoryRequest request);
     CategoryDTO updateCategory(Long id, CategoryRequest request, Locale locale);

@@ -1,6 +1,7 @@
 package com.hiep.mart.controller;
 
 import com.hiep.mart.config.AppObjectMapper;
+import com.hiep.mart.domain.dto.CartProductDTO;
 import com.hiep.mart.domain.dto.ProductDTO;
 import com.hiep.mart.domain.request.ProductRequest;
 import com.hiep.mart.domain.response.ApiResponse;
@@ -10,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +62,11 @@ public class ProductController {
     @GetMapping("/find-by-name/{name}")
     public List<ProductDTO> findProductByName(@PathVariable String name){
         return productService.getProductsByName(name);
+    }
+
+    @GetMapping("/find-all-by-user")
+    public List<CartProductDTO> findAllProductByUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
+        return productService.getAllProductsByUser(authorizationHeader);
     }
 
     @PostMapping

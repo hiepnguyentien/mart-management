@@ -25,7 +25,8 @@ public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS_GET = {"/product/find-all-active", "product/find-by-id/{productId}",
             "/category/find-all", "/product/category/{categoryId}","/product/find-by-name/{productName}",
-            "address/ward/{districtCode}", "address/district/{provinceCode}", "/address/province"};
+            "address/ward/{districtCode}", "address/district/{provinceCode}", "/address/province",
+            "/category/find-all-active"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;

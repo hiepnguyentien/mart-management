@@ -29,7 +29,15 @@ public class CategoryServiceImpl implements CategoryService {
     MessageSource messageSource;
 
     @Override
+    @PreAuthorize("hasAuthority('GET_ALL_CATEGORIES')")
     public List<CategoryDTO> getAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(categoryMapper::toCategoryDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CategoryDTO> getAllActiveCategories() {
         return categoryRepository.findAll().stream()
                 .filter(c -> c.getCategoryStatus().equals("ACTIVE"))
                 .map(categoryMapper::toCategoryDTO)
@@ -47,6 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
     @PreAuthorize("hasAuthority('ADD_NEW_CATEGORY')")
     public CategoryDTO createCategory(CategoryRequest request) {
         Categories categories = categoryMapper.toCategory(request);
+//        categories.setCategoryStatus("ACTIVE");
         categoryRepository.save(categories);
         return categoryMapper.toCategoryDTO(categories);
     }
@@ -57,6 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
         Categories categories = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));
         categoryMapper.updateCategory(categories, request);
+        categoryRepository.save(categories);
         return categoryMapper.toCategoryDTO(categories);
     }
 

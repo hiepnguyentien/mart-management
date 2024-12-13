@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class PaymentResponseDTO {
+    String orderCode;
     LocalDate paymentDate;
     String amount;
     Long customerId;

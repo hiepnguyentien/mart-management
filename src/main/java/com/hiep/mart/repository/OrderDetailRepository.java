@@ -9,7 +9,7 @@ import com.hiep.mart.domain.entity.OrderDetail;
 import java.util.List;
 
 @Repository
-public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long>{
+public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long>, OrderDetailRepositoryCustom{
 
     @Query(value = Queries.FIND_BY_ORDER_ID, nativeQuery = true)
     List<OrderDetail> findByOrderId(Long orderId);

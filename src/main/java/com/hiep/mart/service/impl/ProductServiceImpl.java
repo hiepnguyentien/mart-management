@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import com.hiep.mart.domain.dto.CartProductDTO;
 import com.hiep.mart.domain.entity.Categories;
 import com.hiep.mart.domain.entity.Products;
 import com.hiep.mart.exception.AppException;
@@ -33,13 +34,11 @@ public class ProductServiceImpl implements ProductService{
     CategoryRepository categoryRepository;
     ProductMapper productMapper;
     MessageSource messageSource;
+    AuthenticationService authenticationService;
 
     @Override
     public List<ProductDTO> getAllActiveProducts() {
-        return productRepository.findAll().stream()
-                .filter(p -> p.getProductStatus().equals("Active"))
-                .map(productMapper::toProductDTO)
-                .collect(Collectors.toList());
+        return productRepository.getAllActiveProduct();
     }
 
     @Override
@@ -49,6 +48,13 @@ public class ProductServiceImpl implements ProductService{
         return productRepository.findAll().stream()
                 .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('GET_ALL_PRODUCT_BY_USER')")
+    public List<CartProductDTO> getAllProductsByUser(String authorizationHeader) {
+        Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
+        return productRepository.getAllProductsByUser(userId);
     }
 
 //    @Override
@@ -75,11 +81,8 @@ public class ProductServiceImpl implements ProductService{
     @Override
 //    @PreAuthorize("hasAuthority('GET_PRODUCT_BY_NAME')")
     public List<ProductDTO> getProductsByName(String name) {
-        return productRepository.findAll().stream()
-                .filter(product -> product.getProductName().toLowerCase().contains(name.toLowerCase()))
-                .filter(p -> p.getProductStatus().equals("Active"))
-                .map(productMapper::toProductDTO)
-                .collect(Collectors.toList());
+        String input = name.toLowerCase();
+        return productRepository.getProductsByName(input);
     }
 
     @Override
@@ -87,7 +90,7 @@ public class ProductServiceImpl implements ProductService{
     @PreAuthorize("hasAuthority('ADD_NEW_PRODUCT')")
     public ProductDTO createProduct(ProductRequest request) {
         Products product = productMapper.toProducts(request);
-        product.setProductStatus("Active");
+//        product.setProductStatus("Active");
         productRepository.save(product);
         return productMapper.toProductDTO(product);
     }
@@ -144,6 +147,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @PreAuthorize("hasAuthority('ADD_PRODUCT_TO_CATEGORY')")
+    @Transactional
     public void addProductToCategory(Long categoryId, Long productId, Locale locale) {
         Products product = productRepository.findById(productId)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_FOUND, messageSource, locale));
@@ -152,7 +156,7 @@ public class ProductServiceImpl implements ProductService{
                 .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND, messageSource, locale));
         System.out.println(product + " " + category);
         product.getCategories().add(category);
-        category.getProducts().add(product);
+//        category.getProducts().add(product);
         productRepository.save(product);
     }
 

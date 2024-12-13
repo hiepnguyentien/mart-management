@@ -13,6 +13,7 @@ import com.hiep.mart.service.OrderDetailService;
 import com.hiep.mart.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PaymentService {
     private final AuthenticationService authenticationService;
     private final CartService cartService;
@@ -37,21 +39,18 @@ public class PaymentService {
             Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
             Long customerId = authenticationService.getCustomerIdFromUserId(userId);
             List<ProductCartDTO> cartItems = cartService.viewCart(authorizationHeader);
-
             OrderDTO orderDTO = createOrder(customerId);
             Double total = processOrderDetails(cartItems, orderDTO);
-
             updateOrderTotal(orderDTO, total);
             addFinanceRecord(total);
             cartService.clearCart(authorizationHeader);
-
             paymentResponseDTO.setPaymentDate(LocalDate.now());
             paymentResponseDTO.setAmount(amount.substring(0, amount.length() - 2));
             paymentResponseDTO.setCustomerId(customerId);
+            paymentResponseDTO.setOrderCode(orderDTO.getOrderCode());
         } catch (Exception e) {
             throw new RuntimeException("Fail to handle transaction");
         }
-
         return paymentResponseDTO;
     }
 
@@ -60,25 +59,22 @@ public class PaymentService {
         request.setCustomerId(customerId);
         request.setOrderDate(LocalDate.now());
         request.setOrderStatus("Active");
-        request.setOrderCode("#" + LocalTime.now().toString());
+        request.setOrderCode("#" + LocalTime.now());
         return orderService.addOrder(request);
     }
 
     private Double processOrderDetails(List<ProductCartDTO> cartItems, OrderDTO orderDTO) {
-        Double total = 3000D;
+        Double total = 0D;
         for (ProductCartDTO productCartDTO : cartItems) {
-            try {
-                OrderDetailRequest orderDetailRequest = new OrderDetailRequest();
-                orderDetailRequest.setProductId(productCartDTO.getProductId());
-                orderDetailRequest.setOrderId(orderDTO.getOrderId());
-                orderDetailRequest.setOrderDetailQuantity(productCartDTO.getQuantity());
-                orderDetailRequest.setOrderDetailPrice(productCartDTO.getProductPrice());
-                total += productCartDTO.getPromotionalPrice() * productCartDTO.getQuantity();
-                orderDetailService.addToOrderDetail(orderDetailRequest);
-            } catch (Exception e) {
-                System.err.println("Failed to process product: " + productCartDTO.getProductId() + ", error: " + e.getMessage());
-            }
+            OrderDetailRequest orderDetailRequest = new OrderDetailRequest();
+            orderDetailRequest.setProductId(productCartDTO.getProductId());
+            orderDetailRequest.setOrderId(orderDTO.getOrderId());
+            orderDetailRequest.setOrderDetailQuantity(productCartDTO.getQuantity());
+            orderDetailRequest.setOrderDetailPrice(productCartDTO.getProductPrice());
+            total += productCartDTO.getPromotionalPrice() * productCartDTO.getQuantity();
+            orderDetailService.addToOrderDetail(orderDetailRequest);
         }
+        total += 3000D;
         return total;
     }
 

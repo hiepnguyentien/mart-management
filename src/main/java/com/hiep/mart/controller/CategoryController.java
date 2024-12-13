@@ -26,6 +26,11 @@ public class CategoryController {
         return categoryService.getAllCategories();
     }
 
+    @GetMapping("/find-all-active")
+    public List<CategoryDTO> findAllActive() {
+        return categoryService.getAllActiveCategories();
+    }
+
     @GetMapping("find-by-id/{id}")
     public CategoryDTO findById(@PathVariable Long id, @RequestParam(name = "lang", required = false) String lang) {
         Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();

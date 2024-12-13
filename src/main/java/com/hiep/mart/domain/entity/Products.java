@@ -2,6 +2,7 @@ package com.hiep.mart.domain.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -46,6 +47,7 @@ public class Products {
     Set<Batch> batch;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "product_category",
             joinColumns = @JoinColumn(name = "product_id"),

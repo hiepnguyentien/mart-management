@@ -13,5 +13,4 @@ public class CategoryRequest {
     @NotNull(message = "REQUIRED_FIELD_MISSING")
     String categoryName;
     String categoryDescription;
-    String categoryStatus;
 }
