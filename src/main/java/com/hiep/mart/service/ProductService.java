@@ -19,6 +19,7 @@ public interface ProductService {
     ProductDTO inActiveProduct(Long id, Locale locale);
     ProductDTO activeProduct(Long id, Locale locale);
     void addProductToCategory(Long categoryId, Long productId, Locale locale);
+    void decreaseProductQuantity(Long productId, Long quantity);
 
     List<ProductDTO> getProductsByCategoryId(Long categoryId);
     List<ProductDTO> getProductsBySupplierId(Long supplierId);

@@ -6,6 +6,7 @@ import com.hiep.mart.domain.mapper.FinanceMapper;
 import com.hiep.mart.domain.request.FinanceRequest;
 import com.hiep.mart.repository.FinanceRepository;
 import com.hiep.mart.service.FinanceService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -31,6 +32,7 @@ public class FinanceServcieImpl implements FinanceService {
     }
 
     @Override
+    @Transactional
     public void addFinance(FinanceRequest request) {
         Finance finance = financeMapper.toFinance(request);
         financeRepository.save(finance);

@@ -5,6 +5,7 @@ import com.hiep.mart.domain.enumeration.CustomerStatus;
 import com.hiep.mart.exception.AppException;
 import com.hiep.mart.exception.ErrorCode;
 import com.hiep.mart.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +38,7 @@ public class CustomerServiceImpl implements CustomerService{
     PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public CustomerDTO createCustomer(CustomerRequest request) {
         Customers customers = customerMapper.toCustomer(request);
         customers.setCustomerStatus(CustomerStatus.AVAILABLE);
@@ -59,6 +61,7 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
+    @Transactional
 //    @PostAuthorize("returnObject.username == authentication.name")
     public CustomerDTO updateProfile(CustomerRequest request, Locale locale) {
         var context = SecurityContextHolder.getContext();
@@ -76,6 +79,7 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
+    @Transactional
     @PostAuthorize("returnObject.username == authentication.name")
     public void changePassword(String currentPassword, String newPassword) {
         var context = SecurityContextHolder.getContext();

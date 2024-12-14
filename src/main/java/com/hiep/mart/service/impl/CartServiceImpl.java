@@ -4,6 +4,7 @@ import com.hiep.mart.domain.dto.ProductCartDTO;
 import com.hiep.mart.exception.AppException;
 import com.hiep.mart.exception.ErrorCode;
 import com.hiep.mart.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
 //    @PostAuthorize("returnObject.userId == authentication.userId")
+    @Transactional
     @PreAuthorize("hasAuthority('ADD_TO_CART')")
     public CartDTO addToCart(CartRequest request, String authorizationHeader, Locale locale) throws AppException {
         Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
@@ -61,6 +63,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('REMOVE_FROM_CART')")
     public void removeFromCart(Long productId, String authorizationHeader, Locale locale) {
         Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
@@ -70,6 +73,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('UPDATE_CART')")
     public CartDTO updateCart(CartRequest request, String authorizationHeader, Locale locale) {
         Long userId = authenticationService.getUserIdFromToken(authorizationHeader);
@@ -83,6 +87,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('CLEAR_CART')")
     public void clearCart(String authorizationHeader) {
         Long userId = authenticationService.getUserIdFromToken(authorizationHeader);

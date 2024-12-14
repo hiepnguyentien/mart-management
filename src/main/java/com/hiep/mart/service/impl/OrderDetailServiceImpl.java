@@ -8,6 +8,7 @@ import com.hiep.mart.domain.request.OrderDetailRequest;
 import com.hiep.mart.repository.OrderDetailRepository;
 import com.hiep.mart.service.OrderDetailService;
 import com.hiep.mart.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -36,6 +37,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
+    @Transactional
     public void addToOrderDetail(OrderDetailRequest request) {
         orderDetailRepository.save(orderDetailMapper.toOrderDetail(request));
     }

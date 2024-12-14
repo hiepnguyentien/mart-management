@@ -21,4 +21,10 @@ public class OrderRequest {
     Double orderTotal;
     @NotNull(message = "REQUIRED_FIELD_MISSING")
     Long customerId;
+    String address;
+    String note;
+    String phoneNumber;
+    String deliveryDate;
+    String deliveryTime;
+    String paymentMethod;
 }

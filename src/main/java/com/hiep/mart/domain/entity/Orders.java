@@ -28,7 +28,18 @@ public class Orders {
     String orderStatus;
     @Column(name = "order_total")
     Double orderTotal;
-
+    @Column(name = "address")
+    String address;
+    @Column(name = "note")
+    String note;
+    @Column(name = "phone_number")
+    String phoneNumber;
+    @Column(name = "delivery_date")
+    String deliveryDate;
+    @Column(name = "delivery_time")
+    String deliveryTime;
+    @Column(name = "payment_method")
+    String paymentMethod;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     Customers customers;

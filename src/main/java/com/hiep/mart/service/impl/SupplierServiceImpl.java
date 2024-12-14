@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
@@ -57,6 +58,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('ADD_SUPPLIER')")
     public SupplierDTO addSupplier(SupplierRequest request) {
         Suppliers supplier = supplierMapper.toSupplier(request);
@@ -65,6 +67,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('DELETE_SUPPLIER')")
     public void deleteSupplier(Long id, Locale locale) {
         Suppliers suppliers = supplierRepository.findById(id)

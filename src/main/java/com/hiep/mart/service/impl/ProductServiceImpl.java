@@ -161,6 +161,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public void decreaseProductQuantity(Long productId, Long quantity) {
+        Products product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product with ID " + productId + " not found"));
+
+        if (product.getInventoryQuantity() == null || product.getInventoryQuantity() < quantity) {
+            throw new IllegalArgumentException("Insufficient inventory for product: " + product.getProductName());
+        }
+
+        product.setInventoryQuantity(product.getInventoryQuantity() - quantity);
+
+        productRepository.save(product);
+    }
+
+    @Override
     public List<ProductDTO> getProductsByCategoryId(Long categoryId) {
         return productRepository.getProductByCategoryId(categoryId);
     }

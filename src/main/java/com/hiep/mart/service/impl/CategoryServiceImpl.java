@@ -8,6 +8,7 @@ import com.hiep.mart.exception.AppException;
 import com.hiep.mart.exception.ErrorCode;
 import com.hiep.mart.repository.CategoryRepository;
 import com.hiep.mart.service.CategoryService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -52,6 +53,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('ADD_NEW_CATEGORY')")
     public CategoryDTO createCategory(CategoryRequest request) {
         Categories categories = categoryMapper.toCategory(request);
@@ -61,6 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('UPDATE_CATEGORY')")
     public CategoryDTO updateCategory(Long categoryId, CategoryRequest request, Locale locale) {
         Categories categories = categoryRepository.findById(categoryId)
@@ -71,6 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('DELETE_CATEGORY')")
     public void deleteCategory(Long categoryId, Locale locale) {
         Categories category = categoryRepository.findById(categoryId)
@@ -79,6 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('INACTIVE_CATEGORY')")
     public CategoryDTO inActivateCategory(Long categoryId, Locale locale) {
         Categories categories = categoryRepository.findById(categoryId)
@@ -92,6 +97,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('ACTIVE_CATEGORY')")
     public CategoryDTO activateCategory(Long categoryId, Locale locale) {
         Categories categories = categoryRepository.findById(categoryId)

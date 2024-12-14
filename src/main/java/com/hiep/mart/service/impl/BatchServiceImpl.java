@@ -77,6 +77,7 @@ public class BatchServiceImpl implements BatchService {
     }
 
     @Override
+    @Transactional
     @PreAuthorize("hasAuthority('UPDATE_BATCH')")
     public BatchDTO updateBatch(Long batchId, BatchRequest request, Locale locale) {
         Batch batch = batchRepository.findById(batchId)

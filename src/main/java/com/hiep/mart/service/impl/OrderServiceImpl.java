@@ -39,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDTO addOrder(OrderRequest request) {
         Orders orders = orderMapper.toOrder(request);
         orderRepository.save(orders);

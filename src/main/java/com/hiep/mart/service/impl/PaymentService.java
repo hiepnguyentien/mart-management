@@ -7,10 +7,7 @@ import com.hiep.mart.domain.enumeration.TypeOfTransaction;
 import com.hiep.mart.domain.request.FinanceRequest;
 import com.hiep.mart.domain.request.OrderDetailRequest;
 import com.hiep.mart.domain.request.OrderRequest;
-import com.hiep.mart.service.CartService;
-import com.hiep.mart.service.FinanceService;
-import com.hiep.mart.service.OrderDetailService;
-import com.hiep.mart.service.OrderService;
+import com.hiep.mart.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +25,7 @@ public class PaymentService {
     private final OrderService orderService;
     private final OrderDetailService orderDetailService;
     private final FinanceService financeService;
+    private final ProductService productService;
 
     public PaymentResponseDTO handleTransaction(String authorizationHeader, String amount, String bankCode, String orderInfo, String responseCode) {
         PaymentResponseDTO paymentResponseDTO = new PaymentResponseDTO();
@@ -60,6 +58,12 @@ public class PaymentService {
         request.setOrderDate(LocalDate.now());
         request.setOrderStatus("Active");
         request.setOrderCode("#" + LocalTime.now());
+//        request.setNote();
+//        request.setPaymentMethod();
+//        request.setAddress();
+//        request.setDeliveryDate();
+//        request.setDeliveryTime();
+//        request.setPhoneNumber();
         return orderService.addOrder(request);
     }
 
@@ -70,9 +74,10 @@ public class PaymentService {
             orderDetailRequest.setProductId(productCartDTO.getProductId());
             orderDetailRequest.setOrderId(orderDTO.getOrderId());
             orderDetailRequest.setOrderDetailQuantity(productCartDTO.getQuantity());
-            orderDetailRequest.setOrderDetailPrice(productCartDTO.getProductPrice());
+            orderDetailRequest.setOrderDetailPrice(productCartDTO.getPromotionalPrice());
             total += productCartDTO.getPromotionalPrice() * productCartDTO.getQuantity();
             orderDetailService.addToOrderDetail(orderDetailRequest);
+            productService.decreaseProductQuantity(productCartDTO.getProductId(), productCartDTO.getQuantity());
         }
         total += 3000D;
         return total;

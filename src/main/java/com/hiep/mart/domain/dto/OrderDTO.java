@@ -17,4 +17,10 @@ public class OrderDTO {
     String orderStatus;
     Double orderTotal;
     Long customerId;
+    String address;
+    String note;
+    String phoneNumber;
+    String deliveryDate;
+    String deliveryTime;
+    String paymentMethod;
 }
