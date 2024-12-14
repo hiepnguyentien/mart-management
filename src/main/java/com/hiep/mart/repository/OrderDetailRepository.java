@@ -13,4 +13,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long>,
 
     @Query(value = Queries.FIND_BY_ORDER_ID, nativeQuery = true)
     List<OrderDetail> findByOrderId(Long orderId);
+
+
 }
