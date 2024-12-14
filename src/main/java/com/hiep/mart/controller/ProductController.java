@@ -124,4 +124,9 @@ public class ProductController {
         Locale locale = lang != null ? new Locale(lang) : Locale.getDefault();
         return productService.inActiveProduct(id, locale);
     }
+
+    @PutMapping("/decrease/{productId}/{quantity}")
+    public void decreaseProductQuantity(@PathVariable Long productId,@PathVariable Long quantity){
+        productService.decreaseProductQuantity(productId, quantity);
+    }
 }
